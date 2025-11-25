@@ -3,7 +3,7 @@
 <package format="3">
   <name>fta_interfaces</name>
   <version>0.1.0</version>
-  <description>FTA (Forklift Twin Actuators) 커스텀 메시지 정의</description>
+  <description>FTA (Forklift Twin Actuators) Custom Message Definitions</description>
   <maintainer email="dev@watanow.com">FTA Team</maintainer>
   <license>MIT</license>
 

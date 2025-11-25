@@ -3,9 +3,9 @@
 <package format="3">
   <name>fta_actuators</name>
   <version>0.1.0</version>
-  <description>Forklift Twin Actuators - LED/Buzzer, Speaker 등 액추에이터 제어 패키지</description>
+  <description>Forklift Twin Actuators - LED/Buzzer, Speaker and other actuator control package</description>
   
-  <maintainer email="your_email@example.com">Your Name</maintainer>
+  <maintainer email="dev@watanow.com">FTA Team</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
