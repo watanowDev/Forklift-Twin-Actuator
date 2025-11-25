@@ -21,6 +21,7 @@ namespace fta_actuators
     enum class LEDColor;
     enum class LEDPattern;
     enum class BuzzerPattern;
+    struct PatliteCommand;
 
     namespace patlite
     {
