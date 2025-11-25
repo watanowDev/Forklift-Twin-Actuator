@@ -157,11 +157,19 @@ namespace fta_actuators
             return LEDColor::BLUE;
         if (lower_str == "white")
             return LEDColor::WHITE;
-        if (lower_str == "off")
-            return LEDColor::OFF;
+        if (lower_str == "off" || lower_str == "clear")
+            return LEDColor::CLEAR;
+        if (lower_str == "skyblue" || lower_str == "cyan")
+            return LEDColor::SKYBLUE;
+        if (lower_str == "purple")
+            return LEDColor::PURPLE;
+        if (lower_str == "lemon")
+            return LEDColor::LEMON;
+        if (lower_str == "peachblow")
+            return LEDColor::PEACHBLOW;
 
-        std::cerr << "Unknown color: " << color_str << ", defaulting to OFF" << std::endl;
-        return LEDColor::OFF;
+        std::cerr << "Unknown color: " << color_str << ", defaulting to CLEAR" << std::endl;
+        return LEDColor::CLEAR;
     }
 
     // ============================================
@@ -176,12 +184,18 @@ namespace fta_actuators
 
         if (lower_str == "off")
             return LEDPattern::OFF;
-        if (lower_str == "on")
-            return LEDPattern::ON;
-        if (lower_str == "blink")
-            return LEDPattern::BLINK;
-        if (lower_str == "blink_fast")
-            return LEDPattern::BLINK_FAST;
+        if (lower_str == "continuous" || lower_str == "on")
+            return LEDPattern::CONTINUOUS;
+        if (lower_str == "pattern2")
+            return LEDPattern::PATTERN2;
+        if (lower_str == "pattern3")
+            return LEDPattern::PATTERN3;
+        if (lower_str == "pattern4")
+            return LEDPattern::PATTERN4;
+        if (lower_str == "pattern5")
+            return LEDPattern::PATTERN5;
+        if (lower_str == "pattern6")
+            return LEDPattern::PATTERN6;
 
         std::cerr << "Unknown LED pattern: " << pattern_str << ", defaulting to OFF" << std::endl;
         return LEDPattern::OFF;
@@ -201,12 +215,18 @@ namespace fta_actuators
             return BuzzerPattern::OFF;
         if (lower_str == "continuous")
             return BuzzerPattern::CONTINUOUS;
-        if (lower_str == "pattern_1" || lower_str == "pattern1")
-            return BuzzerPattern::PATTERN_1;
-        if (lower_str == "pattern_2" || lower_str == "pattern2")
-            return BuzzerPattern::PATTERN_2;
-        if (lower_str == "pattern_3" || lower_str == "pattern3")
-            return BuzzerPattern::PATTERN_3;
+        if (lower_str == "pattern1")
+            return BuzzerPattern::PATTERN1;
+        if (lower_str == "pattern2")
+            return BuzzerPattern::PATTERN2;
+        if (lower_str == "pattern3")
+            return BuzzerPattern::PATTERN3;
+        if (lower_str == "pattern4")
+            return BuzzerPattern::PATTERN4;
+        if (lower_str == "pattern5")
+            return BuzzerPattern::PATTERN5;
+        if (lower_str == "pattern6")
+            return BuzzerPattern::PATTERN6;
 
         std::cerr << "Unknown buzzer pattern: " << pattern_str << ", defaulting to OFF" << std::endl;
         return BuzzerPattern::OFF;
