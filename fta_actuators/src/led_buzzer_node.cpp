@@ -81,9 +81,8 @@ namespace fta_actuators
       return false;
     }
 
-    // Initial LED status: Green ON
-    driver_->set_light(LEDColor::GREEN, LEDPattern::ON);
-
+    // Initial LED status: Green CONTINUOUS
+    driver_->set_light(LEDColor::GREEN, LEDPattern::CONTINUOUS);
     return true;
   }
 

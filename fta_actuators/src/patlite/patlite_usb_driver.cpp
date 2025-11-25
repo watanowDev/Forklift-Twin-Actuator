@@ -158,6 +158,21 @@ namespace fta_actuators
         }
 
         // ============================================
+        // 모두 끄기
+        // ============================================
+        bool PatliteUsbDriver::turn_off_all()
+        {
+            if (!is_connected())
+            {
+                set_error("Device not connected");
+                return false;
+            }
+
+            // LED OFF + Buzzer OFF
+            return set_all(LEDColor::CLEAR, LEDPattern::OFF, BuzzerPattern::OFF, 0, 0);
+        }
+
+        // ============================================
         // 장치 정보 가져오기
         // ============================================
 

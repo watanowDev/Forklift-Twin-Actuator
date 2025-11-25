@@ -14,39 +14,49 @@ namespace fta_actuators
     }
 
     // ============================================
-    // Patlite LED Color Enum
+    // Patlite LED Color Enum (matches C# implementation)
     // ============================================
     enum class LEDColor
     {
-        OFF = 0,
-        RED = 1,
-        YELLOW = 2,
-        GREEN = 3,
-        BLUE = 4,
-        WHITE = 5
+        CLEAR = 0,     // Off
+        RED = 1,       // Red
+        YELLOW = 2,    // Yellow
+        LEMON = 3,     // Lemon
+        GREEN = 4,     // Green
+        SKYBLUE = 5,   // Sky Blue (Cyan)
+        BLUE = 6,      // Blue
+        PURPLE = 7,    // Purple
+        PEACHBLOW = 8, // Peach Blow
+        WHITE = 9      // White
     };
 
     // ============================================
-    // Patlite LED Pattern Enum
+    // Patlite LED Pattern Enum (matches C# implementation)
     // ============================================
     enum class LEDPattern
     {
-        OFF = 0,
-        ON = 1,
-        BLINK = 2,
-        BLINK_FAST = 3
+        OFF = 0,        // Off
+        CONTINUOUS = 1, // Continuous (always on)
+        PATTERN2 = 2,   // Pattern 2
+        PATTERN3 = 3,   // Pattern 3
+        PATTERN4 = 4,   // Pattern 4
+        PATTERN5 = 5,   // Pattern 5
+        PATTERN6 = 6    // Pattern 6
     };
 
     // ============================================
-    // Patlite Buzzer Pattern Enum
+    // Patlite Buzzer Pattern Enum (matches C# implementation)
     // ============================================
     enum class BuzzerPattern
     {
-        OFF = 0,
-        CONTINUOUS = 1,
-        PATTERN_1 = 2,
-        PATTERN_2 = 3,
-        PATTERN_3 = 4
+        OFF = 0,        // Off
+        CONTINUOUS = 1, // Continuous sound
+        PATTERN1 = 2,   // Pattern 1
+        PATTERN2 = 3,   // Pattern 2
+        PATTERN3 = 4,   // Pattern 3
+        PATTERN4 = 5,   // Pattern 4
+        PATTERN5 = 6,   // Pattern 5
+        PATTERN6 = 7    // Pattern 6
     };
 
     // ============================================

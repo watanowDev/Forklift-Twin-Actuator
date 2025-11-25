@@ -63,6 +63,9 @@ namespace fta_actuators
             bool set_all(LEDColor color, LEDPattern led_pattern,
                          BuzzerPattern buzzer_pattern, int volume, int count);
 
+            // 모두 끄기
+            bool turn_off_all();
+
             // 장치 정보 가져오기
             UsbDeviceInfo get_device_info() const;
 
