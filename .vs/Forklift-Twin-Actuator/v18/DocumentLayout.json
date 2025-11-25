@@ -1,0 +1,496 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_interfaces\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\CMakeLists.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|CMake \uAC1C\uC694 \uD398\uC774\uC9C0||{B1CAA5B0-FEB1-4350-8AB9-F895876842F2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.github\\copilot-instructions.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.github\\copilot-instructions.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\include\\fta_actuators\\patlite_driver.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\include\\fta_actuators\\patlite_driver.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\patlite_driver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\src\\patlite_driver.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\package.xml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_interfaces\\package.xml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\include\\fta_actuators\\led_buzzer_node.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\include\\fta_actuators\\led_buzzer_node.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\FTA_README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:FTA_README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\msg\\ActuatorStatus.msg||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_interfaces\\msg\\ActuatorStatus.msg||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\msg\\ActionEvent.msg||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_interfaces\\msg\\ActionEvent.msg||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\led_buzzer_node.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\src\\led_buzzer_node.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\led_buzzer_node_main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\src\\led_buzzer_node_main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\test_action_publisher.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\src\\test_action_publisher.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\package.xml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\package.xml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\launch\\led_buzzer.launch.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\launch\\led_buzzer.launch.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\launch\\test_led_buzzer.launch.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\launch\\test_led_buzzer.launch.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\config\\led_buzzer.yaml||{06C066C6-04A2-4E5D-8202-439FD4234EF1}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:fta_actuators\\config\\led_buzzer.yaml||{06C066C6-04A2-4E5D-8202-439FD4234EF1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\README_FTA.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:README_FTA.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SUMMARY.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\c_cpp_properties.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.vscode\\c_cpp_properties.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\tasks.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.vscode\\tasks.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\launch.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.vscode\\launch.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\extensions.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.vscode\\extensions.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\settings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.vscode\\settings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\DEVELOPMENT_SETUP.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DEVELOPMENT_SETUP.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\QUICK_SETUP.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:QUICK_SETUP.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 23,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "QUICK_SETUP.md",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\QUICK_SETUP.md",
+              "RelativeDocumentMoniker": "QUICK_SETUP.md",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\QUICK_SETUP.md",
+              "RelativeToolTip": "QUICK_SETUP.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-11-25T06:02:59.876Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "DEVELOPMENT_SETUP.md",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\DEVELOPMENT_SETUP.md",
+              "RelativeDocumentMoniker": "DEVELOPMENT_SETUP.md",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\DEVELOPMENT_SETUP.md",
+              "RelativeToolTip": "DEVELOPMENT_SETUP.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFMBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-11-25T06:02:46.62Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "settings.json",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\settings.json",
+              "RelativeDocumentMoniker": ".vscode\\settings.json",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\settings.json",
+              "RelativeToolTip": ".vscode\\settings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-25T06:01:52.564Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "extensions.json",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\extensions.json",
+              "RelativeDocumentMoniker": ".vscode\\extensions.json",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\extensions.json",
+              "RelativeToolTip": ".vscode\\extensions.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-25T06:01:44.526Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "launch.json",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\launch.json",
+              "RelativeDocumentMoniker": ".vscode\\launch.json",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\launch.json",
+              "RelativeToolTip": ".vscode\\launch.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-25T06:01:38.184Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "tasks.json",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\tasks.json",
+              "RelativeDocumentMoniker": ".vscode\\tasks.json",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\tasks.json",
+              "RelativeToolTip": ".vscode\\tasks.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-25T06:01:30.903Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "c_cpp_properties.json",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\c_cpp_properties.json",
+              "RelativeDocumentMoniker": ".vscode\\c_cpp_properties.json",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.vscode\\c_cpp_properties.json",
+              "RelativeToolTip": ".vscode\\c_cpp_properties.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-25T06:01:22.637Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CMake \uAC1C\uC694 \uD398\uC774\uC9C0",
+              "DocumentMoniker": "CMake \uAC1C\uC694 \uD398\uC774\uC9C0",
+              "ToolTip": "CMake \uAC1C\uC694 \uD398\uC774\uC9C0",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-11-25T05:58:49.006Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "SUMMARY.md",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\SUMMARY.md",
+              "RelativeDocumentMoniker": "SUMMARY.md",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\SUMMARY.md",
+              "RelativeToolTip": "SUMMARY.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIABAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-11-25T05:57:04.343Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "README_FTA.md",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\README_FTA.md",
+              "RelativeDocumentMoniker": "README_FTA.md",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\README_FTA.md",
+              "RelativeToolTip": "README_FTA.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-11-25T05:55:52.49Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "led_buzzer.yaml",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\config\\led_buzzer.yaml",
+              "RelativeDocumentMoniker": "fta_actuators\\config\\led_buzzer.yaml",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\config\\led_buzzer.yaml",
+              "RelativeToolTip": "fta_actuators\\config\\led_buzzer.yaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003775|",
+              "WhenOpened": "2025-11-25T05:54:28.418Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "test_led_buzzer.launch.py",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\launch\\test_led_buzzer.launch.py",
+              "RelativeDocumentMoniker": "fta_actuators\\launch\\test_led_buzzer.launch.py",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\launch\\test_led_buzzer.launch.py",
+              "RelativeToolTip": "fta_actuators\\launch\\test_led_buzzer.launch.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2025-11-25T05:54:22.255Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "led_buzzer.launch.py",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\launch\\led_buzzer.launch.py",
+              "RelativeDocumentMoniker": "fta_actuators\\launch\\led_buzzer.launch.py",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\launch\\led_buzzer.launch.py",
+              "RelativeToolTip": "fta_actuators\\launch\\led_buzzer.launch.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2025-11-25T05:54:13.197Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "package.xml",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\package.xml",
+              "RelativeDocumentMoniker": "fta_actuators\\package.xml",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\package.xml",
+              "RelativeToolTip": "fta_actuators\\package.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2025-11-25T05:54:04.823Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CMakeLists.txt",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\CMakeLists.txt",
+              "RelativeDocumentMoniker": "fta_actuators\\CMakeLists.txt",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\CMakeLists.txt",
+              "RelativeToolTip": "fta_actuators\\CMakeLists.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-11-25T05:53:57.774Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "test_action_publisher.cpp",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\test_action_publisher.cpp",
+              "RelativeDocumentMoniker": "fta_actuators\\src\\test_action_publisher.cpp",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\test_action_publisher.cpp",
+              "RelativeToolTip": "fta_actuators\\src\\test_action_publisher.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-11-25T05:53:42.838Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "led_buzzer_node_main.cpp",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\led_buzzer_node_main.cpp",
+              "RelativeDocumentMoniker": "fta_actuators\\src\\led_buzzer_node_main.cpp",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\led_buzzer_node_main.cpp",
+              "RelativeToolTip": "fta_actuators\\src\\led_buzzer_node_main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-11-25T05:53:26.986Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "led_buzzer_node.cpp",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\led_buzzer_node.cpp",
+              "RelativeDocumentMoniker": "fta_actuators\\src\\led_buzzer_node.cpp",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\led_buzzer_node.cpp",
+              "RelativeToolTip": "fta_actuators\\src\\led_buzzer_node.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-11-25T05:53:21.163Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "patlite_driver.cpp",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\patlite_driver.cpp",
+              "RelativeDocumentMoniker": "fta_actuators\\src\\patlite_driver.cpp",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\src\\patlite_driver.cpp",
+              "RelativeToolTip": "fta_actuators\\src\\patlite_driver.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-11-25T05:52:50.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "patlite_driver.hpp",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\include\\fta_actuators\\patlite_driver.hpp",
+              "RelativeDocumentMoniker": "fta_actuators\\include\\fta_actuators\\patlite_driver.hpp",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\include\\fta_actuators\\patlite_driver.hpp",
+              "RelativeToolTip": "fta_actuators\\include\\fta_actuators\\patlite_driver.hpp",
+              "ViewState": "AgIAAFUAAAAAAAAAAAAowGYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-11-25T05:47:35.62Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "led_buzzer_node.hpp",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\include\\fta_actuators\\led_buzzer_node.hpp",
+              "RelativeDocumentMoniker": "fta_actuators\\include\\fta_actuators\\led_buzzer_node.hpp",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_actuators\\include\\fta_actuators\\led_buzzer_node.hpp",
+              "RelativeToolTip": "fta_actuators\\include\\fta_actuators\\led_buzzer_node.hpp",
+              "ViewState": "AgIAACYAAAAAAAAAAAAowDcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-11-25T05:47:20.95Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "package.xml",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\package.xml",
+              "RelativeDocumentMoniker": "fta_interfaces\\package.xml",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\package.xml",
+              "RelativeToolTip": "fta_interfaces\\package.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2025-11-25T05:47:08.725Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CMakeLists.txt",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\CMakeLists.txt",
+              "RelativeDocumentMoniker": "fta_interfaces\\CMakeLists.txt",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\CMakeLists.txt",
+              "RelativeToolTip": "fta_interfaces\\CMakeLists.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-11-25T05:47:01.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ActuatorStatus.msg",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\msg\\ActuatorStatus.msg",
+              "RelativeDocumentMoniker": "fta_interfaces\\msg\\ActuatorStatus.msg",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\msg\\ActuatorStatus.msg",
+              "RelativeToolTip": "fta_interfaces\\msg\\ActuatorStatus.msg",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001861|",
+              "WhenOpened": "2025-11-25T05:46:55.835Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ActionEvent.msg",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\msg\\ActionEvent.msg",
+              "RelativeDocumentMoniker": "fta_interfaces\\msg\\ActionEvent.msg",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\fta_interfaces\\msg\\ActionEvent.msg",
+              "RelativeToolTip": "fta_interfaces\\msg\\ActionEvent.msg",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001861|",
+              "WhenOpened": "2025-11-25T05:46:49.537Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FTA_README.md",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\FTA_README.md",
+              "RelativeDocumentMoniker": "FTA_README.md",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\FTA_README.md",
+              "RelativeToolTip": "FTA_README.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-11-25T05:46:43.475Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\README.md",
+              "RelativeDocumentMoniker": "README.md",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\README.md",
+              "RelativeToolTip": "README.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADMAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-11-25T05:46:30.833Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "copilot-instructions.md",
+              "DocumentMoniker": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.github\\copilot-instructions.md",
+              "RelativeDocumentMoniker": ".github\\copilot-instructions.md",
+              "ToolTip": "C:\\Users\\wmszz\\source\\repos\\Forklift-Twin-Actuator\\.github\\copilot-instructions.md",
+              "RelativeToolTip": ".github\\copilot-instructions.md",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAAAEMAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-11-25T05:40:29.472Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

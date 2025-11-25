@@ -1,0 +1,97 @@
+﻿#pragma once
+
+#include <functional>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <string>
+#include <vector>
+
+namespace LEDModule {
+
+// 이벤트 구독자 타입 정의
+template<typename TPayload>
+using EventHandler = std::function<void(const TPayload&)>;
+
+// 구독 토큰 (구독 취소를 위한 핸들)
+class SubscriptionToken {
+public:
+    SubscriptionToken(int id) : id_(id) {}
+    int GetId() const { return id_; }
+    
+private:
+    int id_;
+};
+
+// 이벤트 타입별 관리 클래스
+template<typename TPayload>
+class Event {
+public:
+    // 이벤트 구독
+    std::shared_ptr<SubscriptionToken> Subscribe(EventHandler<TPayload> handler) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        int token_id = next_token_id_++;
+        handlers_[token_id] = handler;
+        return std::make_shared<SubscriptionToken>(token_id);
+    }
+    
+    // 이벤트 구독 취소
+    void Unsubscribe(std::shared_ptr<SubscriptionToken> token) {
+        if (token) {
+            std::lock_guard<std::mutex> lock(mutex_);
+            handlers_.erase(token->GetId());
+        }
+    }
+    
+    // 이벤트 발행
+    void Publish(const TPayload& payload) {
+        std::lock_guard<std::mutex> lock(mutex_);
+        for (auto& pair : handlers_) {
+            try {
+                pair.second(payload);
+            }
+            catch (...) {
+                // 예외 처리 - 로깅 등을 추가할 수 있음
+            }
+        }
+    }
+
+private:
+    std::map<int, EventHandler<TPayload>> handlers_;
+    std::mutex mutex_;
+    int next_token_id_ = 0;
+};
+
+// 이벤트 애그리게이터 (Prism의 IEventAggregator와 유사)
+class EventAggregator {
+public:
+    static EventAggregator& GetInstance() {
+        static EventAggregator instance;
+        return instance;
+    }
+    
+    template<typename TPayload>
+    std::shared_ptr<Event<TPayload>> GetEvent() {
+        const char* type_name = typeid(TPayload).name();
+        std::lock_guard<std::mutex> lock(mutex_);
+        
+        auto it = events_.find(type_name);
+        if (it == events_.end()) {
+            auto event = std::make_shared<Event<TPayload>>();
+            events_[type_name] = event;
+            return event;
+        }
+        
+        return std::static_pointer_cast<Event<TPayload>>(it->second);
+    }
+
+private:
+    EventAggregator() = default;
+    EventAggregator(const EventAggregator&) = delete;
+    EventAggregator& operator=(const EventAggregator&) = delete;
+    
+    std::map<std::string, std::shared_ptr<void>> events_;
+    std::mutex mutex_;
+};
+
+} // namespace LEDModule

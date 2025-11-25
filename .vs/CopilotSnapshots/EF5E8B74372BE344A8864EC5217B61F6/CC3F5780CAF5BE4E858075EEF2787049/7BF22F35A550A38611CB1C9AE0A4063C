@@ -1,0 +1,198 @@
+﻿#include "../include/StatusLED/PatliteLEDBuzzer.h"
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+// ============================================
+// NeUsbController DLL 함수 선언
+// C#에서 사용하던 NeUsbController.dll의 함수들
+// ============================================
+extern "C" {
+    // 디바이스 열기
+    int __stdcall NE_OpenDevice();
+    
+    // 디바이스 닫기
+    int __stdcall NE_CloseDevice();
+    
+    // LED 제어
+    int __stdcall NE_SetLight(int color, int pattern);
+    
+    // 부저 제어
+    int __stdcall NE_SetBuz(int pattern, int volume, int count);
+    
+    // 디바이스 상태 확인
+    int __stdcall NE_GetDeviceState(int* buzzer_state, int* led_state, int* touch_state);
+}
+
+namespace PatliteLED {
+
+// ============================================
+// 생성자
+// ============================================
+PatliteLEDBuzzer::PatliteLEDBuzzer(EventAggregator& event_aggregator, const LedBuzzerConfig& config)
+    : event_aggregator_(event_aggregator)
+    , config_(config)
+    , is_connected_(false)
+{
+    Log("PatliteLEDBuzzer 생성됨");
+}
+
+// ============================================
+// 소멸자
+// ============================================
+PatliteLEDBuzzer::~PatliteLEDBuzzer() {
+    Cleanup();
+    Log("PatliteLEDBuzzer 소멸됨");
+}
+
+// ============================================
+// 초기화 함수
+// C#의 Init() 메서드와 동일
+// ============================================
+bool PatliteLEDBuzzer::Init() {
+    try {
+        // 디바이스 연결 시도
+        int result = NE_OpenDevice();
+        
+        if (result == 0) {  // 성공 (0은 성공, 그 외는 에러코드)
+            is_connected_ = true;
+            Log("Patlite 디바이스 연결 성공");
+            
+            // 이벤트 구독
+            auto event = event_aggregator_.GetEvent<PatliteLEDBuzzerModel>();
+            subscription_token_ = event->Subscribe(
+                [this](const PatliteLEDBuzzerModel& model) {
+                    this->OnLEDEvent(model);
+                }
+            );
+            
+            // 초기 상태: 초록색 연속 점등
+            SetLight(LEDColors::Green, LEDPatterns::Continuous);
+            
+            return true;
+        }
+        else {
+            Log("Patlite 디바이스 연결 실패: 에러코드 " + std::to_string(result));
+            return false;
+        }
+    }
+    catch (...) {
+        Log("Patlite LED 초기화 예외 발생", "SystemLog");
+        return false;
+    }
+}
+
+// ============================================
+// LED 이벤트 핸들러
+// C#의 OnLEDEvent 메서드와 동일
+// ============================================
+void PatliteLEDBuzzer::OnLEDEvent(const PatliteLEDBuzzerModel& status) {
+    if (!is_connected_) {
+        Log("디바이스가 연결되지 않음");
+        return;
+    }
+    
+    // 부저 설정
+    SetBuzzer(status.buzzer_pattern, status.buzzer_count);
+    
+    // LED 설정
+    SetLight(status.led_color, status.led_pattern);
+}
+
+// ============================================
+// LED 설정 함수
+// C#의 SetLight 메서드와 동일
+// ============================================
+void PatliteLEDBuzzer::SetLight(LEDColors color, LEDPatterns pattern) {
+    try {
+        int result = NE_SetLight(static_cast<int>(color), static_cast<int>(pattern));
+        
+        if (result == 0) {
+            Log("LED 설정 완료: Color=" + std::to_string(static_cast<int>(color)) + 
+                ", Pattern=" + std::to_string(static_cast<int>(pattern)));
+        }
+        else {
+            Log("LED 설정 실패: 에러코드 " + std::to_string(result));
+        }
+    }
+    catch (...) {
+        Log("Patlite LED SetLight 예외 발생", "SystemLog");
+    }
+}
+
+// ============================================
+// 부저 설정 함수
+// C#의 SetBuzzer 메서드와 동일
+// ============================================
+void PatliteLEDBuzzer::SetBuzzer(BuzzerPatterns pattern, int count) {
+    try {
+        int result = NE_SetBuz(
+            static_cast<int>(pattern), 
+            config_.volume, 
+            count
+        );
+        
+        if (result == 0) {
+            Log("부저 설정 완료: Pattern=" + std::to_string(static_cast<int>(pattern)) + 
+                ", Volume=" + std::to_string(config_.volume) + 
+                ", Count=" + std::to_string(count));
+        }
+        else {
+            Log("부저 설정 실패: 에러코드 " + std::to_string(result));
+        }
+    }
+    catch (...) {
+        Log("Patlite LED SetBuzzer 예외 발생", "SystemLog");
+    }
+}
+
+// ============================================
+// 디바이스 상태 확인 함수
+// C#의 GetBuzzerPlaying 메서드와 유사
+// ============================================
+bool PatliteLEDBuzzer::GetDeviceState(bool& buzzer_state, bool& led_state, bool& touch_state) {
+    int b_state = 0, l_state = 0, t_state = 0;
+    
+    int result = NE_GetDeviceState(&b_state, &l_state, &t_state);
+    
+    buzzer_state = (b_state != 0);
+    led_state = (l_state != 0);
+    touch_state = (t_state != 0);
+    
+    Log("디바이스 상태: Buzzer=" + std::to_string(buzzer_state) + 
+        ", LED=" + std::to_string(led_state) + 
+        ", Touch=" + std::to_string(touch_state), "WeightLog");
+    
+    return (result == 0);
+}
+
+// ============================================
+// 리소스 정리 함수
+// ============================================
+void PatliteLEDBuzzer::Cleanup() {
+    if (is_connected_) {
+        // 이벤트 구독 해제
+        if (subscription_token_) {
+            auto event = event_aggregator_.GetEvent<PatliteLEDBuzzerModel>();
+            event->Unsubscribe(subscription_token_);
+            subscription_token_.reset();
+        }
+        
+        // 디바이스 닫기
+        NE_CloseDevice();
+        is_connected_ = false;
+        
+        Log("Patlite 디바이스 연결 종료");
+    }
+}
+
+// ============================================
+// 로그 함수 (C#의 Tools.Log 대체)
+// ============================================
+void PatliteLEDBuzzer::Log(const std::string& message, const std::string& type) {
+    // 실제 프로젝트에서는 로깅 라이브러리 사용 권장
+    // 여기서는 콘솔 출력으로 대체
+    std::cout << "[" << type << "] " << message << std::endl;
+}
+
+} // namespace PatliteLED

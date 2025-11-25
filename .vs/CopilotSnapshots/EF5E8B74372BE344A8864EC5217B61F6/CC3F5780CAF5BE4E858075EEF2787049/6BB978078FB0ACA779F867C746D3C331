@@ -1,0 +1,247 @@
+﻿# Patlite LED/Buzzer C++ 제어 라이브러리
+
+C# 프로젝트 `WATA.LIS.INDICATOR.LED`의 Patlite LED/Buzzer 제어 기능을 C++로 포팅한 라이브러리입니다.
+
+## 📁 프로젝트 구조
+
+```
+cpp/LEDModule/
+├── include/
+│   ├── EventAggregator.h      # 이벤트 시스템 (Prism EventAggregator 포팅)
+│   ├── LEDModels.h             # 데이터 모델 및 열거형 정의
+│   └── StatusLED/
+│       └── PatliteLEDBuzzer.h  # Patlite 제어 클래스
+├── src/
+│   ├── PatliteLEDBuzzer.cpp    # Patlite 제어 구현
+│   └── main.cpp                # 테스트 프로그램
+├── CMakeLists.txt              # CMake 빌드 설정
+└── README.md                   # 이 파일
+```
+
+## 🔧 빌드 환경 요구사항
+
+### 필수 요구사항
+- **Visual Studio 2019 이상** (C++17 지원)
+- **CMake 3.15 이상**
+- **NeUsbController.dll** (Patlite 디바이스 제어용)
+
+### 선택 사항
+- **vcpkg** (외부 라이브러리 관리)
+
+## 🚀 1단계: 프로젝트 빌드 (Visual Studio 사용)
+
+### 방법 A: Visual Studio에서 직접 열기
+
+1. Visual Studio 2019/2022 실행
+2. `파일` → `열기` → `CMake...` 선택
+3. `cpp/LEDModule/CMakeLists.txt` 파일 선택
+4. Visual Studio가 자동으로 CMake 프로젝트를 구성합니다
+5. 상단 메뉴에서 빌드 구성 선택 (Debug/Release)
+6. `빌드` → `모두 빌드` 선택
+
+### 방법 B: CMake 명령줄 사용
+
+```powershell
+# 1. 빌드 디렉토리 생성
+cd cpp/LEDModule
+mkdir build
+cd build
+
+# 2. CMake 구성 (Visual Studio 2022 기준)
+cmake .. -G "Visual Studio 17 2022" -A x64
+
+# 3. 빌드
+cmake --build . --config Release
+
+# 4. 실행 파일 위치
+# build/Release/PatliteLEDTest.exe
+```
+
+## 📦 2단계: NeUsbController.dll 준비
+
+Patlite 디바이스를 제어하려면 `NeUsbController.dll`이 필요합니다.
+
+### DLL 배치 방법
+
+1. **C# 프로젝트에서 복사**
+   ```
+   reference/WATA.LIS.INDICATOR.LED/Libary/NeUsbController.dll
+   ```
+
+2. **실행 파일과 같은 폴더에 복사**
+   ```
+   cpp/LEDModule/build/Release/NeUsbController.dll
+   ```
+
+### Import Library 생성 (선택사항)
+
+DLL에서 .lib 파일을 생성하려면:
+
+```powershell
+# Visual Studio Developer Command Prompt에서 실행
+lib /def:NeUsbController.def /out:NeUsbController.lib /machine:x64
+```
+
+## 🎯 3단계: 테스트 실행
+
+### 테스트 프로그램 실행
+
+```powershell
+cd build/Release
+.\PatliteLEDTest.exe
+```
+
+### 예상 출력
+
+```
+========================================
+  Patlite LED/Buzzer 제어 테스트
+========================================
+[SystemLog] PatliteLEDBuzzer 생성됨
+[SystemLog] Patlite 디바이스 연결 성공
+[SystemLog] LED 설정 완료: Color=4, Pattern=1
+
+[테스트 1] 초록색 연속 점등
+[SystemLog] 부저 설정 완료: Pattern=11, Volume=50, Count=0
+[SystemLog] LED 설정 완료: Color=4, Pattern=1
+
+[테스트 2] 노란색 점멸 + 부저
+...
+```
+
+## 💡 사용 방법
+
+### 기본 사용 예제
+
+```cpp
+#include "include/StatusLED/PatliteLEDBuzzer.h"
+#include "include/EventAggregator.h"
+#include "include/LEDModels.h"
+
+using namespace PatliteLED;
+
+int main() {
+    // 1. 설정 생성
+    LedBuzzerConfig config;
+    config.led_enable = 1;
+    config.volume = 50;
+
+    // 2. 이벤트 애그리게이터 가져오기
+    EventAggregator& eventAggregator = EventAggregator::GetInstance();
+
+    // 3. Patlite 객체 생성 및 초기화
+    PatliteLEDBuzzer patlite(eventAggregator, config);
+    if (!patlite.Init()) {
+        return -1;
+    }
+
+    // 4. 이벤트 발행
+    auto ledEvent = eventAggregator.GetEvent<PatliteLEDBuzzerModel>();
+    
+    PatliteLEDBuzzerModel model;
+    model.led_color = LEDColors::Green;
+    model.led_pattern = LEDPatterns::Continuous;
+    model.buzzer_pattern = BuzzerPatterns::Stop;
+    model.buzzer_count = 0;
+    
+    ledEvent->Publish(model);
+
+    return 0;
+}
+```
+
+### 이벤트 기반 사용 (다른 클래스에서 구독)
+
+```cpp
+// 다른 클래스에서 이벤트 구독
+auto ledEvent = eventAggregator.GetEvent<PatliteLEDBuzzerModel>();
+auto token = ledEvent->Subscribe([](const PatliteLEDBuzzerModel& model) {
+    std::cout << "LED 상태 변경됨!" << std::endl;
+});
+
+// 이벤트 발행 (어디서든 호출 가능)
+PatliteLEDBuzzerModel model;
+model.led_color = LEDColors::Red;
+ledEvent->Publish(model);
+
+// 구독 취소
+ledEvent->Unsubscribe(token);
+```
+
+## 🔌 NeUsbController API 함수
+
+### 사용 가능한 함수들
+
+```cpp
+// 디바이스 열기 (반환값: 0=성공, 그 외=에러코드)
+int NE_OpenDevice();
+
+// 디바이스 닫기
+int NE_CloseDevice();
+
+// LED 제어
+int NE_SetLight(int color, int pattern);
+
+// 부저 제어
+int NE_SetBuz(int pattern, int volume, int count);
+
+// 디바이스 상태 확인
+int NE_GetDeviceState(int* buzzer_state, int* led_state, int* touch_state);
+```
+
+## 📊 LED 색상 코드
+
+| 색상 | 코드 | 열거형 |
+|------|------|--------|
+| 끄기 | 0 | `LEDColors::Clear` |
+| 빨강 | 1 | `LEDColors::Red` |
+| 노랑 | 2 | `LEDColors::Yellow` |
+| 초록 | 4 | `LEDColors::Green` |
+| 파랑 | 6 | `LEDColors::Blue` |
+| 흰색 | 9 | `LEDColors::White` |
+
+## 🔊 부저 패턴
+
+| 패턴 | 코드 | 설명 |
+|------|------|------|
+| Pattern1-11 | 0-10 | 다양한 부저 소리 패턴 |
+| Stop | 11 | 부저 정지 |
+
+## ⚠️ 문제 해결
+
+### DLL을 찾을 수 없다는 오류
+
+```
+해결: NeUsbController.dll을 실행 파일과 같은 폴더에 복사
+```
+
+### 디바이스 연결 실패
+
+```
+1. Patlite 디바이스가 USB에 연결되었는지 확인
+2. 디바이스 드라이버가 설치되었는지 확인
+3. 다른 프로그램에서 디바이스를 사용 중인지 확인
+```
+
+### 빌드 오류
+
+```
+- C++17을 지원하는 컴파일러를 사용하는지 확인
+- CMake 버전이 3.15 이상인지 확인
+```
+
+## 📝 다음 단계
+
+1. **로깅 시스템 개선**: 현재는 `std::cout` 사용, 실제 프로젝트에서는 로깅 라이브러리 권장
+2. **에러 처리 강화**: 더 상세한 에러 코드 및 메시지
+3. **설정 파일**: JSON 파일로부터 설정 읽기
+4. **유닛 테스트**: Google Test 등을 사용한 테스트 추가
+
+## 📄 라이선스
+
+원본 C# 프로젝트와 동일한 라이선스 적용
+
+## 👥 기여자
+
+- C# 원본: WATA.LIS.INDICATOR.LED
+- C++ 포팅: [Your Name]

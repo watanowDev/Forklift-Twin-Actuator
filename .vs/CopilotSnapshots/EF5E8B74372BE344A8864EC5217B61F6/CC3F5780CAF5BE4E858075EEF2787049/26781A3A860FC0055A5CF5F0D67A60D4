@@ -1,0 +1,393 @@
+﻿# 🚀 C# → C++ 포팅 완료 가이드
+
+## 📋 작업 완료 항목
+
+### ✅ 생성된 파일들
+
+```
+cpp/LEDModule/
+├── include/
+│   ├── EventAggregator.h         ✅ Prism EventAggregator 포팅
+│   ├── LEDModels.h                ✅ 데이터 모델 및 열거형
+│   └── StatusLED/
+│       └── PatliteLEDBuzzer.h     ✅ Patlite 제어 헤더
+├── src/
+│   ├── PatliteLEDBuzzer.cpp       ✅ Patlite 제어 구현
+│   └── main.cpp                   ✅ 테스트 프로그램
+├── CMakeLists.txt                 ✅ CMake 빌드 설정
+├── build.ps1                      ✅ 빌드 스크립트
+├── README.md                      ✅ 사용 가이드
+└── PORTING_GUIDE.md               ✅ 이 파일
+```
+
+---
+
+## 🔄 C# vs C++ 대응표
+
+### 1. 클래스 대응
+
+| C# 클래스 | C++ 클래스 | 설명 |
+|-----------|-----------|------|
+| `Patlite_LED_Buzzer` | `PatliteLEDBuzzer` | Patlite 디바이스 제어 |
+| `Prism.Events.IEventAggregator` | `EventAggregator` | 이벤트 시스템 |
+| `Led_Buzzer_ConfigModel` | `LedBuzzerConfig` | 설정 구조체 |
+| `Pattlite_LED_Buzzer_Model` | `PatliteLEDBuzzerModel` | LED/부저 제어 모델 |
+
+### 2. 열거형 대응
+
+| C# 열거형 | C++ 열거형 |
+|----------|-----------|
+| `eLEDColors` | `LEDColors` |
+| `eLEDPatterns` | `LEDPatterns` |
+| `eBuzzerPatterns` | `BuzzerPatterns` |
+
+### 3. 메서드 대응
+
+| C# 메서드 | C++ 메서드 |
+|----------|-----------|
+| `Init()` | `Init()` |
+| `OnLEDEvent(status)` | `OnLEDEvent(const PatliteLEDBuzzerModel&)` |
+| `SetLight(color, pattern)` | `SetLight(LEDColors, LEDPatterns)` |
+| `SetBuzzer(pattern, count)` | `SetBuzzer(BuzzerPatterns, int)` |
+| `GetDeviceState(...)` | `GetDeviceState(bool&, bool&, bool&)` |
+
+---
+
+## 🏗️ 아키텍처 설계
+
+### 이벤트 기반 아키텍처
+
+C# 원본과 동일하게 **이벤트 기반 아키텍처**를 유지했습니다:
+
+```cpp
+// 이벤트 발행자 (Publisher)
+EventAggregator& ea = EventAggregator::GetInstance();
+auto event = ea.GetEvent<PatliteLEDBuzzerModel>();
+
+PatliteLEDBuzzerModel model;
+model.led_color = LEDColors::Red;
+event->Publish(model);  // 모든 구독자에게 전달
+
+// 이벤트 구독자 (Subscriber)
+class MyClass {
+    void Init(EventAggregator& ea) {
+        auto event = ea.GetEvent<PatliteLEDBuzzerModel>();
+        token_ = event->Subscribe([this](const PatliteLEDBuzzerModel& m) {
+            this->OnLEDEvent(m);
+        });
+    }
+    
+    void OnLEDEvent(const PatliteLEDBuzzerModel& model) {
+        // 이벤트 처리
+    }
+    
+    std::shared_ptr<SubscriptionToken> token_;
+};
+```
+
+### 싱글톤 패턴
+
+`EventAggregator`는 싱글톤으로 구현되어 어디서든 접근 가능:
+
+```cpp
+EventAggregator& ea = EventAggregator::GetInstance();
+```
+
+---
+
+## 🔧 빌드 및 실행 방법
+
+### 방법 1: PowerShell 스크립트 사용 (추천)
+
+```powershell
+cd cpp/LEDModule
+.\build.ps1
+```
+
+### 방법 2: Visual Studio에서 직접 열기
+
+1. Visual Studio 실행
+2. `파일` → `열기` → `CMake...`
+3. `cpp/LEDModule/CMakeLists.txt` 선택
+4. `빌드` → `모두 빌드`
+
+### 방법 3: 수동 CMake 빌드
+
+```powershell
+cd cpp/LEDModule
+mkdir build
+cd build
+cmake .. -G "Visual Studio 17 2022" -A x64
+cmake --build . --config Release
+```
+
+---
+
+## 📦 DLL 의존성
+
+### NeUsbController.dll
+
+Patlite 디바이스 제어를 위해 필요한 DLL입니다.
+
+**위치:**
+```
+reference\WATA.LIS.INDICATOR.LED\Libary\NeUsbController.dll
+```
+
+**배치:**
+```
+cpp\LEDModule\build\Release\NeUsbController.dll
+```
+
+`build.ps1` 스크립트가 자동으로 복사합니다.
+
+---
+
+## 🧪 테스트 시나리오
+
+`main.cpp`에 구현된 테스트:
+
+1. **초기화 테스트**
+   - 디바이스 연결 확인
+   - 초록색 LED 점등
+
+2. **정상 상태**
+   - 초록색 연속 점등
+   - 부저 없음
+
+3. **경고 상태**
+   - 노란색 점멸
+   - 부저 패턴6, 3회
+
+4. **에러 상태**
+   - 빨간색 연속 점등
+   - 부저 패턴1, 5회
+
+5. **종료**
+   - LED/부저 끄기
+
+---
+
+## 💻 통합 예제
+
+### 다른 프로젝트에서 사용하기
+
+#### 1. CMakeLists.txt에 추가
+
+```cmake
+# PatliteLED 라이브러리 추가
+add_subdirectory(cpp/LEDModule)
+
+# 실행 파일 생성
+add_executable(MyApp main.cpp)
+
+# 라이브러리 링크
+target_link_libraries(MyApp PRIVATE PatliteLEDLib)
+```
+
+#### 2. 코드에서 사용
+
+```cpp
+#include "StatusLED/PatliteLEDBuzzer.h"
+#include "EventAggregator.h"
+#include "LEDModels.h"
+
+using namespace PatliteLED;
+
+class MyApplication {
+public:
+    void Init() {
+        // 설정
+        LedBuzzerConfig config;
+        config.led_enable = 1;
+        config.volume = 50;
+        
+        // EventAggregator 가져오기
+        EventAggregator& ea = EventAggregator::GetInstance();
+        
+        // Patlite 초기화
+        patlite_ = std::make_unique<PatliteLEDBuzzer>(ea, config);
+        patlite_->Init();
+        
+        // 이벤트 객체 저장
+        ledEvent_ = ea.GetEvent<PatliteLEDBuzzerModel>();
+    }
+    
+    void SetNormalStatus() {
+        PatliteLEDBuzzerModel model;
+        model.led_color = LEDColors::Green;
+        model.led_pattern = LEDPatterns::Continuous;
+        ledEvent_->Publish(model);
+    }
+    
+    void SetErrorStatus() {
+        PatliteLEDBuzzerModel model;
+        model.led_color = LEDColors::Red;
+        model.led_pattern = LEDPatterns::Continuous;
+        model.buzzer_pattern = BuzzerPatterns::Pattern1;
+        model.buzzer_count = 5;
+        ledEvent_->Publish(model);
+    }
+
+private:
+    std::unique_ptr<PatliteLEDBuzzer> patlite_;
+    std::shared_ptr<Event<PatliteLEDBuzzerModel>> ledEvent_;
+};
+```
+
+---
+
+## 🐛 디버깅 팁
+
+### 1. DLL 로딩 확인
+
+```cpp
+// DLL 함수 호출 전 확인
+HMODULE hDll = LoadLibrary(L"NeUsbController.dll");
+if (hDll == NULL) {
+    std::cerr << "DLL 로드 실패!" << std::endl;
+} else {
+    FreeLibrary(hDll);
+}
+```
+
+### 2. 디바이스 상태 확인
+
+```cpp
+bool buzzer, led, touch;
+patlite.GetDeviceState(buzzer, led, touch);
+std::cout << "Buzzer: " << buzzer << ", LED: " << led << std::endl;
+```
+
+### 3. 이벤트 확인
+
+```cpp
+// 테스트용 구독자 추가
+auto token = ledEvent->Subscribe([](const PatliteLEDBuzzerModel& m) {
+    std::cout << "이벤트 수신: Color=" << static_cast<int>(m.led_color) << std::endl;
+});
+```
+
+---
+
+## 🔐 스레드 안전성
+
+모든 이벤트 처리는 **뮤텍스(mutex)**로 보호되어 스레드 안전합니다:
+
+```cpp
+// EventAggregator.h
+template<typename TPayload>
+class Event {
+private:
+    std::mutex mutex_;  // 스레드 안전성 보장
+    // ...
+};
+```
+
+---
+
+## 📈 성능 최적화 (미래 개선 사항)
+
+1. **이벤트 풀링**: 자주 사용되는 모델 객체 재사용
+2. **비동기 처리**: `std::async`를 사용한 비동기 이벤트 처리
+3. **로깅 최적화**: 링 버퍼 기반 고성능 로깅
+4. **DLL 동적 로딩**: `LoadLibrary` + `GetProcAddress` 사용
+
+---
+
+## ✅ 체크리스트
+
+포팅 완료 후 확인사항:
+
+- [ ] 모든 파일이 정상적으로 생성되었는가?
+- [ ] CMake 빌드가 성공하는가?
+- [ ] NeUsbController.dll이 올바른 위치에 있는가?
+- [ ] 테스트 프로그램이 정상 실행되는가?
+- [ ] Patlite 디바이스가 연결되어 있는가?
+- [ ] LED 색상이 정상적으로 변경되는가?
+- [ ] 부저가 정상적으로 작동하는가?
+
+---
+
+## 🎓 C++ 초보자를 위한 추가 설명
+
+### 포인터 vs 레퍼런스
+
+```cpp
+// 포인터 (null 가능)
+PatliteLEDBuzzer* ptr = new PatliteLEDBuzzer(...);
+delete ptr;
+
+// 레퍼런스 (null 불가, 더 안전)
+EventAggregator& ea = EventAggregator::GetInstance();
+
+// 스마트 포인터 (자동 메모리 관리)
+std::unique_ptr<PatliteLEDBuzzer> ptr = std::make_unique<PatliteLEDBuzzer>(...);
+// delete 불필요, 자동으로 해제됨
+```
+
+### 람다 함수
+
+```cpp
+// C#의 델리게이트와 유사
+auto token = event->Subscribe([this](const Model& m) {
+    // 이벤트 처리
+    this->OnLEDEvent(m);
+});
+
+// 캡처 리스트 [this]: 현재 객체의 멤버 접근 가능
+```
+
+### 템플릿
+
+```cpp
+// C#의 제네릭과 유사
+template<typename TPayload>
+class Event {
+    // TPayload 타입에 대한 범용 코드
+};
+
+// 사용
+Event<PatliteLEDBuzzerModel> event;
+```
+
+---
+
+## 📞 문제 해결
+
+### 문제 1: DLL을 찾을 수 없음
+
+```
+해결: build.ps1을 실행하거나 수동으로 DLL 복사
+```
+
+### 문제 2: 디바이스 연결 실패
+
+```
+해결:
+1. USB 연결 확인
+2. 드라이버 설치 확인
+3. 다른 프로그램에서 사용 중인지 확인
+```
+
+### 문제 3: 빌드 에러
+
+```
+해결:
+1. Visual Studio 2019 이상 설치 확인
+2. CMake 3.15 이상 설치 확인
+3. C++17 지원 확인
+```
+
+---
+
+## 🎉 완료!
+
+C# 프로젝트의 Patlite LED/Buzzer 제어 기능을 C++로 성공적으로 포팅했습니다!
+
+**다음 단계:**
+1. `build.ps1` 실행
+2. 테스트 프로그램 실행
+3. 실제 프로젝트에 통합
+
+질문이나 문제가 있다면 이 가이드를 참고하세요! 🚀

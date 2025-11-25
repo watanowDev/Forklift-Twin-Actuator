@@ -1,0 +1,49 @@
+﻿#pragma once
+
+#include <memory>
+#include "../EventAggregator.h"
+#include "../LEDModels.h"
+
+namespace PatliteLED {
+
+// ============================================
+// Patlite LED 및 Buzzer 제어 클래스
+// C#의 Patlite_LED_Buzzer 클래스를 C++로 포팅
+// ============================================
+class PatliteLEDBuzzer {
+public:
+    // 생성자
+    PatliteLEDBuzzer(EventAggregator& event_aggregator, const LedBuzzerConfig& config);
+    
+    // 소멸자
+    ~PatliteLEDBuzzer();
+    
+    // 초기화 - 디바이스 연결 및 이벤트 구독
+    bool Init();
+    
+    // LED 이벤트 핸들러 (이벤트 구독 시 호출됨)
+    void OnLEDEvent(const PatliteLEDBuzzerModel& status);
+
+private:
+    EventAggregator& event_aggregator_;
+    LedBuzzerConfig config_;
+    std::shared_ptr<SubscriptionToken> subscription_token_;
+    bool is_connected_;
+    
+    // LED 설정 함수 (NeUsbController.NE_SetLight 호출)
+    void SetLight(LEDColors color, LEDPatterns pattern);
+    
+    // 부저 설정 함수 (NeUsbController.NE_SetBuz 호출)
+    void SetBuzzer(BuzzerPatterns pattern, int count);
+    
+    // 디바이스 상태 확인 (NeUsbController.NE_GetDeviceState 호출)
+    bool GetDeviceState(bool& buzzer_state, bool& led_state, bool& touch_state);
+    
+    // 리소스 정리 (NeUsbController.NE_CloseDevice 호출)
+    void Cleanup();
+    
+    // 로그 함수 (C#의 Tools.Log 대체)
+    void Log(const std::string& message, const std::string& type = "SystemLog");
+};
+
+} // namespace PatliteLED

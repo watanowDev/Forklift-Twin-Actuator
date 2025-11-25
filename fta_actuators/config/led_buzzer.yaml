@@ -1,0 +1,10 @@
+led_buzzer_node:
+  ros__parameters:
+    # LED/Buzzer 노드 활성화 여부
+    enabled: true
+    
+    # 부저 볼륨 (0-100)
+    volume: 50
+    
+    # 디바이스 경로 (선택사항, 비워두면 자동 감지)
+    device_path: ""

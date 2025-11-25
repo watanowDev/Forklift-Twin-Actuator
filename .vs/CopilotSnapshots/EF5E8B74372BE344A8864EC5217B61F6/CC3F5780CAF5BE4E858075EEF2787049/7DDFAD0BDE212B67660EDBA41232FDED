@@ -1,0 +1,75 @@
+﻿# ============================================
+# Patlite LED/Buzzer C++ 프로젝트 빌드 스크립트
+# ============================================
+
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "  Patlite LED/Buzzer C++ 빌드" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+
+# 현재 스크립트 위치로 이동
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+Set-Location $ScriptDir
+
+# 빌드 디렉토리 생성
+$BuildDir = "build"
+if (Test-Path $BuildDir) {
+    Write-Host "[정보] 기존 빌드 디렉토리 삭제 중..." -ForegroundColor Yellow
+    Remove-Item -Recurse -Force $BuildDir
+}
+
+Write-Host "[1/4] 빌드 디렉토리 생성 중..." -ForegroundColor Green
+New-Item -ItemType Directory -Path $BuildDir | Out-Null
+Set-Location $BuildDir
+
+# CMake 구성
+Write-Host "[2/4] CMake 구성 중..." -ForegroundColor Green
+Write-Host "Visual Studio 2022 (x64) 사용" -ForegroundColor Gray
+cmake .. -G "Visual Studio 17 2022" -A x64
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "[에러] CMake 구성 실패!" -ForegroundColor Red
+    Write-Host "CMake가 설치되어 있는지 확인하세요." -ForegroundColor Red
+    Set-Location ..
+    exit 1
+}
+
+# 빌드 (Release)
+Write-Host "[3/4] Release 빌드 중..." -ForegroundColor Green
+cmake --build . --config Release
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "[에러] 빌드 실패!" -ForegroundColor Red
+    Set-Location ..
+    exit 1
+}
+
+# DLL 복사
+Write-Host "[4/4] NeUsbController.dll 복사 중..." -ForegroundColor Green
+$DllSource = "..\..\..\..\reference\WATA.LIS.INDICATOR.LED\Libary\NeUsbController.dll"
+$DllDest = "Release\NeUsbController.dll"
+
+if (Test-Path $DllSource) {
+    Copy-Item $DllSource $DllDest -Force
+    Write-Host "NeUsbController.dll 복사 완료" -ForegroundColor Gray
+} else {
+    Write-Host "[경고] NeUsbController.dll을 찾을 수 없습니다." -ForegroundColor Yellow
+    Write-Host "경로: $DllSource" -ForegroundColor Yellow
+    Write-Host "실행 전 수동으로 DLL을 복사하세요." -ForegroundColor Yellow
+}
+
+# 빌드 완료
+Write-Host ""
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "  빌드 완료!" -ForegroundColor Green
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "실행 파일 위치:" -ForegroundColor White
+Write-Host "  $BuildDir\Release\PatliteLEDTest.exe" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "테스트 실행:" -ForegroundColor White
+Write-Host "  cd $BuildDir\Release" -ForegroundColor Gray
+Write-Host "  .\PatliteLEDTest.exe" -ForegroundColor Gray
+Write-Host ""
+
+Set-Location ..

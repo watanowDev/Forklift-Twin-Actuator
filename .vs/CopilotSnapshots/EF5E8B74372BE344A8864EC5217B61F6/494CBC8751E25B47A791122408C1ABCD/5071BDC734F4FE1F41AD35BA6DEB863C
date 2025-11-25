@@ -1,0 +1,85 @@
+﻿#pragma once
+
+#include <string>
+
+namespace PatliteLED {
+
+// ============================================
+// Patlite LED 색상 열거형
+// NeUsbController.LEDColors와 동일한 값
+// ============================================
+enum class LEDColors {
+    Clear = 0,      // 색상 없음
+    Red = 1,        // 빨강
+    Yellow = 2,     // 노랑
+    Lemon = 3,      // 레몬색
+    Green = 4,      // 초록
+    SkyBlue = 5,    // 하늘색
+    Blue = 6,       // 파랑
+    Purple = 7,     // 보라
+    PeachBlow = 8,  // 복숭아색
+    White = 9       // 흰색
+};
+
+// ============================================
+// Patlite LED 패턴 열거형
+// NeUsbController.LEDPatterns와 동일한 값
+// ============================================
+enum class LEDPatterns {
+    Off = 0,        // 꺼짐
+    Continuous = 1, // 연속 점등
+    Flash1 = 2,     // 점멸 패턴 1
+    Flash2 = 3,     // 점멸 패턴 2
+    Flash3 = 4      // 점멸 패턴 3
+};
+
+// ============================================
+// Patlite 부저 패턴 열거형
+// NeUsbController.BuzzerPatterns와 동일한 값
+// ============================================
+enum class BuzzerPatterns {
+    Pattern1 = 0,
+    Pattern2 = 1,
+    Pattern3 = 2,
+    Pattern4 = 3,
+    Pattern5 = 4,
+    Pattern6 = 5,
+    Pattern7 = 6,
+    Pattern8 = 7,
+    Pattern9 = 8,
+    Pattern10 = 9,
+    Pattern11 = 10,
+    Stop = 11       // 부저 정지
+};
+
+// ============================================
+// Patlite LED/Buzzer 제어 모델
+// C#의 Pattlite_LED_Buzzer_Model과 동일
+// ============================================
+struct PatliteLEDBuzzerModel {
+    LEDColors led_color;
+    LEDPatterns led_pattern;
+    BuzzerPatterns buzzer_pattern;
+    int buzzer_count;
+    
+    PatliteLEDBuzzerModel() 
+        : led_color(LEDColors::Green)
+        , led_pattern(LEDPatterns::Continuous)
+        , buzzer_pattern(BuzzerPatterns::Stop)
+        , buzzer_count(0) {}
+};
+
+// ============================================
+// LED/Buzzer 설정 구조체
+// C#의 Led_Buzzer_ConfigModel과 동일
+// ============================================
+struct LedBuzzerConfig {
+    int led_enable;  // 0: 비활성화, 1: 활성화
+    int volume;      // 부저 볼륨 (0-100)
+    
+    LedBuzzerConfig() 
+        : led_enable(1)
+        , volume(50) {}
+};
+
+} // namespace PatliteLED

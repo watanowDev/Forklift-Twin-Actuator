@@ -1,0 +1,94 @@
+﻿#pragma once
+
+#include <string>
+
+namespace LEDModule {
+
+// LED 색상 열거형
+enum class LEDColors {
+    Clear = 0,
+    Red = 1,
+    Yellow = 2,
+    Lemon = 3,
+    Green = 4,
+    SkyBlue = 5,
+    Blue = 6,
+    Purple = 7,
+    PeachBlow = 8,
+    White = 9
+};
+
+// LED 패턴 열거형
+enum class LEDPatterns {
+    Off = 0,
+    Continuous = 1,
+    Flash1 = 2,
+    Flash2 = 3,
+    Flash3 = 4
+};
+
+// 부저 패턴 열거형
+enum class BuzzerPatterns {
+    Pattern1 = 0,
+    Pattern2 = 1,
+    Pattern3 = 2,
+    Pattern4 = 3,
+    Pattern5 = 4,
+    Pattern6 = 5,
+    Pattern7 = 6,
+    Pattern8 = 7,
+    Pattern9 = 8,
+    Pattern10 = 9,
+    Pattern11 = 10,
+    Stop = 11
+};
+
+// Lamp 시퀀스 열거형
+enum class LampSequence {
+    Clear = 0,
+    Invalid_Docking = 1,
+    Correct_Docking = 2,
+    Invalid_Placement = 3,
+    Correct_Placement = 4
+};
+
+// Patlite LED Buzzer 모델
+struct PatliteLEDBuzzerModel {
+    LEDColors led_color;
+    LEDPatterns led_pattern;
+    BuzzerPatterns buzzer_pattern;
+    int buzzer_count;
+    
+    PatliteLEDBuzzerModel() 
+        : led_color(LEDColors::Clear)
+        , led_pattern(LEDPatterns::Off)
+        , buzzer_pattern(BuzzerPatterns::Stop)
+        , buzzer_count(0) {}
+};
+
+// LED Buzzer 설정 모델
+struct LedBuzzerConfig {
+    int led_enable;
+    int volume;
+    std::string lamp_ip;
+    
+    LedBuzzerConfig() 
+        : led_enable(1)
+        , volume(50)
+        , lamp_ip("192.168.0.100") {}
+};
+
+// 이벤트 페이로드 타입 정의
+struct StatusLEDEvent {
+    std::string color;
+};
+
+struct PatliteLEDBuzzerEvent {
+    PatliteLEDBuzzerModel model;
+};
+
+struct LampSequenceEvent {
+    LampSequence sequence;
+};
+
+} // namespace LEDModule

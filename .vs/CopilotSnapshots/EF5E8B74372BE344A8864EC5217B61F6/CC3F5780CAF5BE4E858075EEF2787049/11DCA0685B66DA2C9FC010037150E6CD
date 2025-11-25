@@ -1,0 +1,90 @@
+﻿#include <iostream>
+#include <thread>
+#include <chrono>
+#include "include/StatusLED/PatliteLEDBuzzer.h"
+#include "include/EventAggregator.h"
+#include "include/LEDModels.h"
+
+using namespace PatliteLED;
+
+// ============================================
+// 메인 함수 - Patlite LED/Buzzer 테스트
+// ============================================
+int main() {
+    std::cout << "========================================" << std::endl;
+    std::cout << "  Patlite LED/Buzzer 제어 테스트" << std::endl;
+    std::cout << "========================================" << std::endl;
+
+    // 1. 설정 생성
+    LedBuzzerConfig config;
+    config.led_enable = 1;
+    config.volume = 50;  // 볼륨 50%
+
+    // 2. 이벤트 애그리게이터 가져오기 (싱글톤)
+    EventAggregator& eventAggregator = EventAggregator::GetInstance();
+
+    // 3. Patlite LED/Buzzer 객체 생성
+    PatliteLEDBuzzer patlite(eventAggregator, config);
+
+    // 4. 초기화
+    if (!patlite.Init()) {
+        std::cerr << "Patlite 초기화 실패!" << std::endl;
+        std::cerr << "NeUsbController.dll이 있는지, 디바이스가 연결되었는지 확인하세요." << std::endl;
+        return -1;
+    }
+
+    std::cout << "\n초기화 완료! 이벤트 발행 테스트를 시작합니다...\n" << std::endl;
+
+    // 5. 이벤트 발행을 위한 Event 객체 가져오기
+    auto ledEvent = eventAggregator.GetEvent<PatliteLEDBuzzerModel>();
+
+    // ============================================
+    // 테스트 시나리오
+    // ============================================
+
+    // 테스트 1: 초록색 연속 점등 (정상 상태)
+    std::cout << "\n[테스트 1] 초록색 연속 점등" << std::endl;
+    PatliteLEDBuzzerModel model1;
+    model1.led_color = LEDColors::Green;
+    model1.led_pattern = LEDPatterns::Continuous;
+    model1.buzzer_pattern = BuzzerPatterns::Stop;
+    model1.buzzer_count = 0;
+    ledEvent->Publish(model1);
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    // 테스트 2: 노란색 점멸 + 부저 패턴6 (경고 상태)
+    std::cout << "\n[테스트 2] 노란색 점멸 + 부저" << std::endl;
+    PatliteLEDBuzzerModel model2;
+    model2.led_color = LEDColors::Yellow;
+    model2.led_pattern = LEDPatterns::Flash1;
+    model2.buzzer_pattern = BuzzerPatterns::Pattern6;
+    model2.buzzer_count = 3;
+    ledEvent->Publish(model2);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    // 테스트 3: 빨간색 연속 점등 + 부저 패턴1 (에러 상태)
+    std::cout << "\n[테스트 3] 빨간색 연속 점등 + 부저" << std::endl;
+    PatliteLEDBuzzerModel model3;
+    model3.led_color = LEDColors::Red;
+    model3.led_pattern = LEDPatterns::Continuous;
+    model3.buzzer_pattern = BuzzerPatterns::Pattern1;
+    model3.buzzer_count = 5;
+    ledEvent->Publish(model3);
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    // 테스트 4: LED/부저 끄기
+    std::cout << "\n[테스트 4] LED/부저 끄기" << std::endl;
+    PatliteLEDBuzzerModel model4;
+    model4.led_color = LEDColors::Clear;
+    model4.led_pattern = LEDPatterns::Off;
+    model4.buzzer_pattern = BuzzerPatterns::Stop;
+    model4.buzzer_count = 0;
+    ledEvent->Publish(model4);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    std::cout << "\n========================================" << std::endl;
+    std::cout << "  테스트 완료! 프로그램을 종료합니다." << std::endl;
+    std::cout << "========================================" << std::endl;
+
+    return 0;
+}

@@ -1,0 +1,39 @@
+﻿#pragma once
+
+#include <memory>
+#include <string>
+#include "EventAggregator.h"
+
+namespace LEDModule {
+
+// BlinkStick USB LED 제어 클래스
+class BlinkStickSquare {
+public:
+    explicit BlinkStickSquare(EventAggregator& event_aggregator);
+    ~BlinkStickSquare();
+    
+    // 초기화
+    bool Init();
+    
+    // LED 색상 설정 이벤트 핸들러
+    void OnLEDEvent(const std::string& color);
+
+private:
+    EventAggregator& event_aggregator_;
+    std::shared_ptr<SubscriptionToken> subscription_token_;
+    
+    // BlinkStick 디바이스 핸들 (실제 구현 시 적절한 타입으로 변경)
+    void* device_handle_;
+    bool is_connected_;
+    
+    // 실제 LED 색상 설정 (HID 통신)
+    bool SetColor(const std::string& color);
+    
+    // USB HID 디바이스 검색 및 연결
+    bool FindAndOpenDevice();
+    
+    // 리소스 정리
+    void Cleanup();
+};
+
+} // namespace LEDModule

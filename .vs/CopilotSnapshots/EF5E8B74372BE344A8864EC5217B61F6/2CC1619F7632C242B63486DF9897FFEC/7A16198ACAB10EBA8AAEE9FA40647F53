@@ -1,0 +1,56 @@
+﻿#ifndef FTA_ACTUATORS__LED_BUZZER_NODE_HPP_
+#define FTA_ACTUATORS__LED_BUZZER_NODE_HPP_
+
+#include <memory>
+#include <string>
+
+#include "rclcpp/rclcpp.hpp"
+#include "fta_interfaces/msg/action_event.hpp"
+#include "fta_interfaces/msg/actuator_status.hpp"
+
+namespace fta_actuators
+{
+
+class LEDBuzzerNode : public rclcpp::Node
+{
+public:
+  explicit LEDBuzzerNode(const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
+  ~LEDBuzzerNode();
+
+private:
+  // ROS2 Subscriber/Publisher
+  rclcpp::Subscription<fta_interfaces::msg::ActionEvent>::SharedPtr action_sub_;
+  rclcpp::Publisher<fta_interfaces::msg::ActuatorStatus>::SharedPtr status_pub_;
+  
+  // 파라미터
+  bool enabled_;
+  int volume_;
+  std::string device_path_;
+  
+  // Patlite 디바이스 핸들
+  void* device_handle_;
+  bool is_connected_;
+  
+  // 콜백 함수
+  void action_callback(const fta_interfaces::msg::ActionEvent::SharedPtr msg);
+  
+  // Patlite 제어 함수
+  bool initialize_device();
+  void cleanup_device();
+  bool set_led(const std::string & color, const std::string & pattern);
+  bool set_buzzer(const std::string & pattern, int count);
+  
+  // 상태 발행
+  void publish_status(const std::string & status, const std::string & message, int error_code = 0);
+  
+  // 파라미터 파싱
+  bool parse_parameters(const std::string & json_params, 
+                       std::string & color, 
+                       std::string & pattern,
+                       std::string & buzzer_pattern,
+                       int & buzzer_count);
+};
+
+}  // namespace fta_actuators
+
+#endif  // FTA_ACTUATORS__LED_BUZZER_NODE_HPP_
