@@ -3,12 +3,12 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     """
-    FTE ¾øÀÌ LED/Buzzer¸¦ Å×½ºÆ®ÇÏ±â À§ÇÑ Launch ÆÄÀÏ
-    - led_buzzer_node: ½ÇÁ¦ µð¹ÙÀÌ½º Á¦¾î
-    - test_action_publisher: 5ÃÊ¸¶´Ù Å×½ºÆ® ¾×¼Ç ¹ßÇà
+    FTE ï¿½ï¿½ï¿½ï¿½ LED/Buzzerï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Launch ï¿½ï¿½ï¿½ï¿½
+    - led_buzzer_node: ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    - test_action_publisher: 5ï¿½Ê¸ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ® ï¿½×¼ï¿½ ï¿½ï¿½ï¿½ï¿½
     """
     
-    # LED/Buzzer ³ëµå
+    # LED/Buzzer ï¿½ï¿½ï¿½
     led_buzzer_node = Node(
         package='fta_actuators',
         executable='led_buzzer_node',
@@ -16,11 +16,11 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'enabled': True,
-            'volume': 50,
-        }]
+            'volume': 5,  # Range: 0-10
+        }],
     )
     
-    # Å×½ºÆ® ¾×¼Ç ¹ßÇà ³ëµå
+    # ï¿½×½ï¿½Æ® ï¿½×¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     test_publisher = Node(
         package='fta_actuators',
         executable='test_action_publisher',

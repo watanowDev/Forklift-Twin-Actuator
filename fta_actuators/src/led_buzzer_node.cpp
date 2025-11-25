@@ -17,7 +17,7 @@ namespace fta_actuators
   {
     // �Ķ���� ����
     this->declare_parameter("enabled", true);
-    this->declare_parameter("volume", 50);
+    this->declare_parameter("volume", 5);  // Range: 0-10
     this->declare_parameter("device_path", "");
 
     // �Ķ���� �б�
