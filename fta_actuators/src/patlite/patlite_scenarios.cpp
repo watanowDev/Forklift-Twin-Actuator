@@ -4,6 +4,7 @@
 // ============================================================================
 
 #include "fta_actuators/patlite/patlite_scenarios.hpp"
+#include "fta_actuators/patlite/patlite_driver.hpp"
 #include <algorithm>
 #include <cctype>
 #include <stdexcept>
