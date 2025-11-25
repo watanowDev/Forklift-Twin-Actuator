@@ -9,6 +9,7 @@
 #define FTA_ACTUATORS__PATLITE_SCENARIOS_HPP_
 
 #include <string>
+#include <vector>
 #include <map>
 
 namespace fta_actuators

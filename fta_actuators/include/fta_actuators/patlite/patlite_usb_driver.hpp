@@ -12,6 +12,7 @@
 #include <libusb-1.0/libusb.h>
 #include <cstdint>
 #include <string>
+#include <vector>
 #include <memory>
 #include "patlite_scenarios.hpp"
 
