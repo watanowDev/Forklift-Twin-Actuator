@@ -150,8 +150,8 @@ namespace fta_actuators
         std::string color_str = params.value("color", "clear");
         std::string pattern_str = params.value("pattern", "off");
 
-        LEDColor color = PatliteDriver::string_to_color(color_str);
-        LEDPattern pattern = PatliteDriver::string_to_pattern(pattern_str);
+        LEDColor color = PatliteDriver::parse_color(color_str);
+        LEDPattern pattern = PatliteDriver::parse_led_pattern(pattern_str);
 
         return driver_->set_light(color, pattern);
       }
@@ -161,7 +161,7 @@ namespace fta_actuators
         std::string pattern_str = params.value("pattern", "stop");
         int count = params.value("count", 1);
 
-        BuzzerPattern pattern = PatliteDriver::string_to_buzzer_pattern(pattern_str);
+        BuzzerPattern pattern = PatliteDriver::parse_buzzer_pattern(pattern_str);
 
         return driver_->set_buzzer(pattern, volume_, count);
       }
@@ -173,9 +173,9 @@ namespace fta_actuators
         std::string buzzer_pattern_str = params.value("buzzer_pattern", "stop");
         int count = params.value("count", 0);
 
-        LEDColor color = PatliteDriver::string_to_color(color_str);
-        LEDPattern led_pattern = PatliteDriver::string_to_pattern(led_pattern_str);
-        BuzzerPattern buzzer_pattern = PatliteDriver::string_to_buzzer_pattern(buzzer_pattern_str);
+        LEDColor color = PatliteDriver::parse_color(color_str);
+        LEDPattern led_pattern = PatliteDriver::parse_led_pattern(led_pattern_str);
+        BuzzerPattern buzzer_pattern = PatliteDriver::parse_buzzer_pattern(buzzer_pattern_str);
 
         bool led_ok = driver_->set_light(color, led_pattern);
         bool buzzer_ok = driver_->set_buzzer(buzzer_pattern, volume_, count);
@@ -186,7 +186,7 @@ namespace fta_actuators
       {
         // ��� ����
         bool led_ok = driver_->set_light(LEDColor::CLEAR, LEDPattern::OFF);
-        bool buzzer_ok = driver_->set_buzzer(BuzzerPattern::STOP, 0, 0);
+        bool buzzer_ok = driver_->set_buzzer(BuzzerPattern::OFF, 0, 0);
         return led_ok && buzzer_ok;
       }
       else
