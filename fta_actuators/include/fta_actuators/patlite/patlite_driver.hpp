@@ -7,96 +7,89 @@
 namespace fta_actuators
 {
 
-// ============================================
-// Patlite LED 색상 열거형
-// ============================================
-enum class LEDColor {
-  CLEAR = 0,
-  RED = 1,
-  YELLOW = 2,
-  LEMON = 3,
-  GREEN = 4,
-  SKYBLUE = 5,
-  BLUE = 6,
-  PURPLE = 7,
-  PEACHBLOW = 8,
-  WHITE = 9
-};
+    // Forward declaration
+    namespace patlite
+    {
+        class PatliteUsbDriver;
+    }
 
-// ============================================
-// Patlite LED 패턴 열거형
-// ============================================
-enum class LEDPattern {
-  OFF = 0,
-  CONTINUOUS = 1,
-  FLASH1 = 2,
-  FLASH2 = 3,
-  FLASH3 = 4
-};
+    // ============================================
+    // Patlite LED Color Enum
+    // ============================================
+    enum class LEDColor
+    {
+        OFF = 0,
+        RED = 1,
+        YELLOW = 2,
+        GREEN = 3,
+        BLUE = 4,
+        WHITE = 5
+    };
 
-// ============================================
-// Patlite 부저 패턴 열거형
-// ============================================
-enum class BuzzerPattern {
-  PATTERN1 = 0,
-  PATTERN2 = 1,
-  PATTERN3 = 2,
-  PATTERN4 = 3,
-  PATTERN5 = 4,
-  PATTERN6 = 5,
-  PATTERN7 = 6,
-  PATTERN8 = 7,
-  PATTERN9 = 8,
-  PATTERN10 = 9,
-  PATTERN11 = 10,
-  STOP = 11
-};
+    // ============================================
+    // Patlite LED Pattern Enum
+    // ============================================
+    enum class LEDPattern
+    {
+        OFF = 0,
+        ON = 1,
+        BLINK = 2,
+        BLINK_FAST = 3
+    };
 
-// ============================================
-// Patlite 드라이버 클래스
-// NeUsbController.dll 래핑
-// ============================================
-class PatliteDriver
-{
-public:
-  PatliteDriver();
-  ~PatliteDriver();
-  
-  // 디바이스 연결
-  bool open_device();
-  void close_device();
-  bool is_connected() const { return is_connected_; }
-  
-  // LED 제어
-  bool set_light(LEDColor color, LEDPattern pattern);
-  
-  // 부저 제어
-  bool set_buzzer(BuzzerPattern pattern, int volume, int count);
-  
-  // 디바이스 상태 확인
-  bool get_device_state(bool & buzzer_state, bool & led_state, bool & touch_state);
-  
-  // 문자열 변환 유틸리티
-  static LEDColor string_to_color(const std::string & color_str);
-  static LEDPattern string_to_pattern(const std::string & pattern_str);
-  static BuzzerPattern string_to_buzzer_pattern(const std::string & pattern_str);
-  
-private:
-  bool is_connected_;
-  void* dll_handle_;  // DLL 핸들 (Windows) 또는 SO 핸들 (Linux)
-  
-  // DLL 함수 포인터들
-  int (*ne_open_device_)();
-  int (*ne_close_device_)();
-  int (*ne_set_light_)(int color, int pattern);
-  int (*ne_set_buz_)(int pattern, int volume, int count);
-  int (*ne_get_device_state_)(int* buzzer, int* led, int* touch);
-  
-  // DLL 로드
-  bool load_dll();
-  void unload_dll();
-};
+    // ============================================
+    // Patlite Buzzer Pattern Enum
+    // ============================================
+    enum class BuzzerPattern
+    {
+        OFF = 0,
+        CONTINUOUS = 1,
+        PATTERN_1 = 2,
+        PATTERN_2 = 3,
+        PATTERN_3 = 4
+    };
 
-}  // namespace fta_actuators
+    // ============================================
+    // Patlite Driver Class
+    // Uses libusb-1.0 based PatliteUsbDriver
+    // ============================================
+    class PatliteDriver
+    {
+    public:
+        PatliteDriver();
+        ~PatliteDriver();
 
-#endif  // FTA_ACTUATORS__PATLITE_DRIVER_HPP_
+        // Device connection
+        bool initialize();
+        bool close_device();
+        bool is_connected() const;
+
+        // LED control
+        bool set_light(LEDColor color, LEDPattern pattern);
+
+        // Buzzer control
+        bool set_buzzer(BuzzerPattern pattern, int volume, int count);
+
+        // Combined LED + Buzzer control
+        bool set_all(LEDColor color, LEDPattern led_pattern,
+                     BuzzerPattern buzzer_pattern, int volume, int count);
+
+        // Turn off all
+        bool turn_off_all();
+
+        // Device state query
+        bool get_device_state(bool &buzzer, bool &led, bool &touch);
+
+        // String parsing utilities
+        static LEDColor parse_color(const std::string &color_str);
+        static LEDPattern parse_led_pattern(const std::string &pattern_str);
+        static BuzzerPattern parse_buzzer_pattern(const std::string &pattern_str);
+
+    private:
+        bool is_connected_;
+        std::unique_ptr<patlite::PatliteUsbDriver> usb_driver_;
+    };
+
+} // namespace fta_actuators
+
+#endif // FTA_ACTUATORS__PATLITE_DRIVER_HPP_

@@ -7,218 +7,234 @@ using namespace std::chrono_literals;
 namespace fta_actuators
 {
 
-// ============================================
-// »ý¼ºÀÚ
-// ============================================
-LEDBuzzerNode::LEDBuzzerNode(const rclcpp::NodeOptions & options)
-: Node("led_buzzer_node", options),
-  enabled_(true),
-  volume_(50)
-{
-  // ÆÄ¶ó¹ÌÅÍ ¼±¾ð
-  this->declare_parameter("enabled", true);
-  this->declare_parameter("volume", 50);
-  this->declare_parameter("device_path", "");
-  
-  // ÆÄ¶ó¹ÌÅÍ ÀÐ±â
-  enabled_ = this->get_parameter("enabled").as_bool();
-  volume_ = this->get_parameter("volume").as_int();
-  device_path_ = this->get_parameter("device_path").as_string();
-  
-  RCLCPP_INFO(this->get_logger(), "LED/Buzzer Node ½ÃÀÛ");
-  RCLCPP_INFO(this->get_logger(), "  - enabled: %s", enabled_ ? "true" : "false");
-  RCLCPP_INFO(this->get_logger(), "  - volume: %d", volume_);
-  
-  if (!enabled_) {
-    RCLCPP_WARN(this->get_logger(), "LED/Buzzer ³ëµå°¡ ºñÈ°¼ºÈ­µÇ¾ú½À´Ï´Ù");
-    return;
-  }
-  
-  // Patlite µå¶óÀÌ¹ö ÃÊ±âÈ­
-  driver_ = std::make_unique<PatliteDriver>();
-  if (!initialize_device()) {
-    RCLCPP_ERROR(this->get_logger(), "Patlite µð¹ÙÀÌ½º ÃÊ±âÈ­ ½ÇÆÐ");
-    publish_status("error", "Failed to initialize Patlite device", 1);
-    return;
-  }
-  
-  // ROS2 ±¸µ¶ÀÚ »ý¼º (QoS1 - Reliable)
-  auto qos = rclcpp::QoS(rclcpp::KeepLast(10)).reliable();
-  action_sub_ = this->create_subscription<fta_interfaces::msg::ActionEvent>(
-    "/actions/event",
-    qos,
-    std::bind(&LEDBuzzerNode::action_callback, this, std::placeholders::_1)
-  );
-  
-  // ROS2 ¹ßÇàÀÚ »ý¼º (QoS1 - Reliable)
-  status_pub_ = this->create_publisher<fta_interfaces::msg::ActuatorStatus>(
-    "/actuators/status",
-    qos
-  );
-  
-  // ÃÊ±â »óÅÂ ¹ßÇà
-  publish_status("idle", "LED/Buzzer node initialized");
-  
-  RCLCPP_INFO(this->get_logger(), "LED/Buzzer ³ëµå ÃÊ±âÈ­ ¿Ï·á");
-}
+  // ============================================
+  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  // ============================================
+  LEDBuzzerNode::LEDBuzzerNode(const rclcpp::NodeOptions &options)
+      : Node("led_buzzer_node", options),
+        enabled_(true),
+        volume_(50)
+  {
+    // ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    this->declare_parameter("enabled", true);
+    this->declare_parameter("volume", 50);
+    this->declare_parameter("device_path", "");
 
-// ============================================
-// ¼Ò¸êÀÚ
-// ============================================
-LEDBuzzerNode::~LEDBuzzerNode()
-{
-  cleanup_device();
-  RCLCPP_INFO(this->get_logger(), "LED/Buzzer ³ëµå Á¾·á");
-}
+    // ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½
+    enabled_ = this->get_parameter("enabled").as_bool();
+    volume_ = this->get_parameter("volume").as_int();
+    device_path_ = this->get_parameter("device_path").as_string();
 
-// ============================================
-// µð¹ÙÀÌ½º ÃÊ±âÈ­
-// ============================================
-bool LEDBuzzerNode::initialize_device()
-{
-  if (!driver_->open_device()) {
-    return false;
-  }
-  
-  // ÃÊ±â LED »óÅÂ: ÃÊ·Ï»ö ¿¬¼Ó Á¡µî
-  driver_->set_light(LEDColor::GREEN, LEDPattern::CONTINUOUS);
-  
-  return true;
-}
+    RCLCPP_INFO(this->get_logger(), "LED/Buzzer Node ï¿½ï¿½ï¿½ï¿½");
+    RCLCPP_INFO(this->get_logger(), "  - enabled: %s", enabled_ ? "true" : "false");
+    RCLCPP_INFO(this->get_logger(), "  - volume: %d", volume_);
 
-// ============================================
-// µð¹ÙÀÌ½º Á¤¸®
-// ============================================
-void LEDBuzzerNode::cleanup_device()
-{
-  if (driver_) {
-    // LED/ºÎÀú ²ô±â
-    driver_->set_light(LEDColor::CLEAR, LEDPattern::OFF);
-    driver_->set_buzzer(BuzzerPattern::STOP, 0, 0);
-    driver_->close_device();
-  }
-}
-
-// ============================================
-// ¾×¼Ç ÀÌº¥Æ® ÄÝ¹é
-// ============================================
-void LEDBuzzerNode::action_callback(const fta_interfaces::msg::ActionEvent::SharedPtr msg)
-{
-  // ¾×Ãß¿¡ÀÌÅÍ Å¸ÀÔ È®ÀÎ
-  if (msg->actuator_type != "led_buzzer") {
-    return;  // ´Ù¸¥ ¾×Ãß¿¡ÀÌÅÍ¿ë ¸Þ½ÃÁö´Â ¹«½Ã
-  }
-  
-  RCLCPP_INFO(this->get_logger(), "Action received: %s", msg->action.c_str());
-  
-  // ¾×¼Ç Ã³¸®
-  bool success = handle_led_buzzer_action(msg->action, msg->parameters);
-  
-  if (success) {
-    publish_status("active", "Action executed: " + msg->action);
-  } else {
-    publish_status("error", "Failed to execute action: " + msg->action, 2);
-  }
-}
-
-// ============================================
-// LED/Buzzer ¾×¼Ç Ã³¸®
-// ============================================
-bool LEDBuzzerNode::handle_led_buzzer_action(
-  const std::string & action, 
-  const std::string & parameters)
-{
-  if (!driver_ || !driver_->is_connected()) {
-    RCLCPP_ERROR(this->get_logger(), "µð¹ÙÀÌ½º°¡ ¿¬°áµÇÁö ¾ÊÀ½");
-    return false;
-  }
-  
-  try {
-    // JSON ÆÄ¶ó¹ÌÅÍ ÆÄ½Ì
-    auto params = json::parse(parameters);
-    
-    if (action == "set_light") {
-      // LED Á¦¾î
-      std::string color_str = params.value("color", "clear");
-      std::string pattern_str = params.value("pattern", "off");
-      
-      LEDColor color = PatliteDriver::string_to_color(color_str);
-      LEDPattern pattern = PatliteDriver::string_to_pattern(pattern_str);
-      
-      return driver_->set_light(color, pattern);
+    if (!enabled_)
+    {
+      RCLCPP_WARN(this->get_logger(), "LED/Buzzer ï¿½ï¿½å°¡ ï¿½ï¿½È°ï¿½ï¿½È­ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
+      return;
     }
-    else if (action == "set_buzzer") {
-      // ºÎÀú Á¦¾î
-      std::string pattern_str = params.value("pattern", "stop");
-      int count = params.value("count", 1);
-      
-      BuzzerPattern pattern = PatliteDriver::string_to_buzzer_pattern(pattern_str);
-      
-      return driver_->set_buzzer(pattern, volume_, count);
+
+    // Patlite ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ ï¿½Ê±ï¿½È­
+    driver_ = std::make_unique<PatliteDriver>();
+    if (!initialize_device())
+    {
+      RCLCPP_ERROR(this->get_logger(), "Patlite ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½");
+      publish_status("error", "Failed to initialize Patlite device", 1);
+      return;
     }
-    else if (action == "set_all") {
-      // LED + ºÎÀú µ¿½Ã Á¦¾î
-      std::string color_str = params.value("color", "clear");
-      std::string led_pattern_str = params.value("led_pattern", "off");
-      std::string buzzer_pattern_str = params.value("buzzer_pattern", "stop");
-      int count = params.value("count", 0);
-      
-      LEDColor color = PatliteDriver::string_to_color(color_str);
-      LEDPattern led_pattern = PatliteDriver::string_to_pattern(led_pattern_str);
-      BuzzerPattern buzzer_pattern = PatliteDriver::string_to_buzzer_pattern(buzzer_pattern_str);
-      
-      bool led_ok = driver_->set_light(color, led_pattern);
-      bool buzzer_ok = driver_->set_buzzer(buzzer_pattern, volume_, count);
-      
-      return led_ok && buzzer_ok;
+
+    // ROS2 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (QoS1 - Reliable)
+    auto qos = rclcpp::QoS(rclcpp::KeepLast(10)).reliable();
+    action_sub_ = this->create_subscription<fta_interfaces::msg::ActionEvent>(
+        "/actions/event",
+        qos,
+        std::bind(&LEDBuzzerNode::action_callback, this, std::placeholders::_1));
+
+    // ROS2 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (QoS1 - Reliable)
+    status_pub_ = this->create_publisher<fta_interfaces::msg::ActuatorStatus>(
+        "/actuators/status",
+        qos);
+
+    // ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    publish_status("idle", "LED/Buzzer node initialized");
+
+    RCLCPP_INFO(this->get_logger(), "LED/Buzzer ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½Ï·ï¿½");
+  }
+
+  // ============================================
+  // ï¿½Ò¸ï¿½ï¿½ï¿½
+  // ============================================
+  LEDBuzzerNode::~LEDBuzzerNode()
+  {
+    cleanup_device();
+    RCLCPP_INFO(this->get_logger(), "LED/Buzzer ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+  }
+
+  // ============================================
+  // Device initialization
+  // ============================================
+  bool LEDBuzzerNode::initialize_device()
+  {
+    if (!driver_->initialize())
+    {
+      return false;
     }
-    else if (action == "clear") {
-      // ¸ðµÎ ²ô±â
-      bool led_ok = driver_->set_light(LEDColor::CLEAR, LEDPattern::OFF);
-      bool buzzer_ok = driver_->set_buzzer(BuzzerPattern::STOP, 0, 0);
-      return led_ok && buzzer_ok;
+
+    // Initial LED status: Green ON
+    driver_->set_light(LEDColor::GREEN, LEDPattern::ON);
+
+    return true;
+  }
+
+  // ============================================
+  // ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½
+  // ============================================
+  void LEDBuzzerNode::cleanup_device()
+  {
+    if (driver_)
+    {
+      // LED/ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+      driver_->set_light(LEDColor::CLEAR, LEDPattern::OFF);
+      driver_->set_buzzer(BuzzerPattern::STOP, 0, 0);
+      driver_->close_device();
     }
-    else {
-      RCLCPP_WARN(this->get_logger(), "¾Ë ¼ö ¾ø´Â ¾×¼Ç: %s", action.c_str());
+  }
+
+  // ============================================
+  // ï¿½×¼ï¿½ ï¿½Ìºï¿½Æ® ï¿½Ý¹ï¿½
+  // ============================================
+  void LEDBuzzerNode::action_callback(const fta_interfaces::msg::ActionEvent::SharedPtr msg)
+  {
+    // ï¿½ï¿½ï¿½ß¿ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ È®ï¿½ï¿½
+    if (msg->actuator_type != "led_buzzer")
+    {
+      return; // ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ß¿ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    }
+
+    RCLCPP_INFO(this->get_logger(), "Action received: %s", msg->action.c_str());
+
+    // ï¿½×¼ï¿½ Ã³ï¿½ï¿½
+    bool success = handle_led_buzzer_action(msg->action, msg->parameters);
+
+    if (success)
+    {
+      publish_status("active", "Action executed: " + msg->action);
+    }
+    else
+    {
+      publish_status("error", "Failed to execute action: " + msg->action, 2);
+    }
+  }
+
+  // ============================================
+  // LED/Buzzer ï¿½×¼ï¿½ Ã³ï¿½ï¿½
+  // ============================================
+  bool LEDBuzzerNode::handle_led_buzzer_action(
+      const std::string &action,
+      const std::string &parameters)
+  {
+    if (!driver_ || !driver_->is_connected())
+    {
+      RCLCPP_ERROR(this->get_logger(), "ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+      return false;
+    }
+
+    try
+    {
+      // JSON ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½Ä½ï¿½
+      auto params = json::parse(parameters);
+
+      if (action == "set_light")
+      {
+        // LED ï¿½ï¿½ï¿½ï¿½
+        std::string color_str = params.value("color", "clear");
+        std::string pattern_str = params.value("pattern", "off");
+
+        LEDColor color = PatliteDriver::string_to_color(color_str);
+        LEDPattern pattern = PatliteDriver::string_to_pattern(pattern_str);
+
+        return driver_->set_light(color, pattern);
+      }
+      else if (action == "set_buzzer")
+      {
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        std::string pattern_str = params.value("pattern", "stop");
+        int count = params.value("count", 1);
+
+        BuzzerPattern pattern = PatliteDriver::string_to_buzzer_pattern(pattern_str);
+
+        return driver_->set_buzzer(pattern, volume_, count);
+      }
+      else if (action == "set_all")
+      {
+        // LED + ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        std::string color_str = params.value("color", "clear");
+        std::string led_pattern_str = params.value("led_pattern", "off");
+        std::string buzzer_pattern_str = params.value("buzzer_pattern", "stop");
+        int count = params.value("count", 0);
+
+        LEDColor color = PatliteDriver::string_to_color(color_str);
+        LEDPattern led_pattern = PatliteDriver::string_to_pattern(led_pattern_str);
+        BuzzerPattern buzzer_pattern = PatliteDriver::string_to_buzzer_pattern(buzzer_pattern_str);
+
+        bool led_ok = driver_->set_light(color, led_pattern);
+        bool buzzer_ok = driver_->set_buzzer(buzzer_pattern, volume_, count);
+
+        return led_ok && buzzer_ok;
+      }
+      else if (action == "clear")
+      {
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        bool led_ok = driver_->set_light(LEDColor::CLEAR, LEDPattern::OFF);
+        bool buzzer_ok = driver_->set_buzzer(BuzzerPattern::STOP, 0, 0);
+        return led_ok && buzzer_ok;
+      }
+      else
+      {
+        RCLCPP_WARN(this->get_logger(), "ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¼ï¿½: %s", action.c_str());
+        return false;
+      }
+    }
+    catch (const json::exception &e)
+    {
+      RCLCPP_ERROR(this->get_logger(), "JSON ï¿½Ä½ï¿½ ï¿½ï¿½ï¿½ï¿½: %s", e.what());
+      return false;
+    }
+    catch (const std::exception &e)
+    {
+      RCLCPP_ERROR(this->get_logger(), "ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½: %s", e.what());
       return false;
     }
   }
-  catch (const json::exception & e) {
-    RCLCPP_ERROR(this->get_logger(), "JSON ÆÄ½Ì ¿À·ù: %s", e.what());
-    return false;
+
+  // ============================================
+  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+  // ============================================
+  void LEDBuzzerNode::publish_status(
+      const std::string &status,
+      const std::string &message,
+      int error_code)
+  {
+    if (!status_pub_)
+    {
+      return;
+    }
+
+    auto status_msg = fta_interfaces::msg::ActuatorStatus();
+    status_msg.actuator_type = "led_buzzer";
+    status_msg.status = status;
+    status_msg.message = message;
+    status_msg.error_code = error_code;
+    status_msg.timestamp = this->now();
+
+    status_pub_->publish(status_msg);
   }
-  catch (const std::exception & e) {
-    RCLCPP_ERROR(this->get_logger(), "¿¹¿Ü ¹ß»ý: %s", e.what());
-    return false;
-  }
-}
+
+} // namespace fta_actuators
 
 // ============================================
-// »óÅÂ ¹ßÇà
-// ============================================
-void LEDBuzzerNode::publish_status(
-  const std::string & status, 
-  const std::string & message, 
-  int error_code)
-{
-  if (!status_pub_) {
-    return;
-  }
-  
-  auto status_msg = fta_interfaces::msg::ActuatorStatus();
-  status_msg.actuator_type = "led_buzzer";
-  status_msg.status = status;
-  status_msg.message = message;
-  status_msg.error_code = error_code;
-  status_msg.timestamp = this->now();
-  
-  status_pub_->publish(status_msg);
-}
-
-}  // namespace fta_actuators
-
-// ============================================
-// ¸ÞÀÎ ÇÔ¼ö
+// ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 // ============================================
 #include "rclcpp_components/register_node_macro.hpp"
 RCLCPP_COMPONENTS_REGISTER_NODE(fta_actuators::LEDBuzzerNode)
