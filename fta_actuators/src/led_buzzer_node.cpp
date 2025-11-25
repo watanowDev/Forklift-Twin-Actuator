@@ -93,9 +93,9 @@ namespace fta_actuators
   {
     if (driver_)
     {
-      // LED/���� ����
+      // LED/Buzzer cleanup
       driver_->set_light(LEDColor::CLEAR, LEDPattern::OFF);
-      driver_->set_buzzer(BuzzerPattern::STOP, 0, 0);
+      driver_->set_buzzer(BuzzerPattern::OFF, 0, 0);
       driver_->close_device();
     }
   }
