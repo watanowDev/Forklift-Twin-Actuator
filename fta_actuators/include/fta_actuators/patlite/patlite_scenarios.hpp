@@ -3,6 +3,9 @@
 // Patlite LED/Buzzer 상황별 제어 시나리오 정의
 //
 // C# StatusService_WATA.cs의 Pattlite_Buzzer_LED 함수를 C++로 포팅
+//
+// NOTE: This header requires patlite_driver.hpp to be included first
+//       to get the actual enum definitions
 // ============================================================================
 
 #ifndef FTA_ACTUATORS__PATLITE_SCENARIOS_HPP_
@@ -12,12 +15,13 @@
 #include <vector>
 #include <map>
 
+// Include enum definitions from driver
+#ifndef FTA_ACTUATORS__PATLITE_DRIVER_HPP_
+#include "patlite_driver.hpp"
+#endif
+
 namespace fta_actuators
 {
-    // Forward declarations (actual definitions in patlite_driver.hpp)
-    enum class LEDColor;
-    enum class LEDPattern;
-    enum class BuzzerPattern;
 
     // ============================================
     // 상황별 제어 시나리오 열거형
