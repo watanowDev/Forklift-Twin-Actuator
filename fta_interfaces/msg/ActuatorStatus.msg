@@ -1,14 +1,14 @@
-# 액추에이터 타입
+# Actuator type
 string actuator_type  # "led_buzzer", "speaker", "battery", "power_mode"
 
-# 현재 상태
+# Status
 string status  # "idle", "active", "error", "disconnected"
 
-# 상세 메시지
+# Status message
 string message
 
-# 에러 코드 (0: 정상, >0: 에러)
+# Error code (0: success, >0: error)
 int32 error_code
 
-# 타임스탬프
+# Timestamp
 builtin_interfaces/Time timestamp
