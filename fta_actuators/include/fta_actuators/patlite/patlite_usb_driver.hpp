@@ -14,10 +14,14 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "patlite_scenarios.hpp"
 
 namespace fta_actuators
 {
+    // Forward declarations
+    enum class LEDColor;
+    enum class LEDPattern;
+    enum class BuzzerPattern;
+
     namespace patlite
     {
 

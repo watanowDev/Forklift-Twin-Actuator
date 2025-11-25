@@ -12,13 +12,12 @@
 #include <vector>
 #include <map>
 
-// Forward declare enums from patlite_driver.hpp
 namespace fta_actuators
 {
+    // Forward declarations (actual definitions in patlite_driver.hpp)
     enum class LEDColor;
     enum class LEDPattern;
     enum class BuzzerPattern;
-}
 
 // ============================================
 // 상황별 제어 시나리오 열거형

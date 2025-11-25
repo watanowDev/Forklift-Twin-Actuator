@@ -6,6 +6,8 @@
 // ============================================================================
 
 #include "fta_actuators/patlite/patlite_usb_driver.hpp"
+#include "fta_actuators/patlite/patlite_driver.hpp"
+#include "fta_actuators/patlite/patlite_scenarios.hpp"
 #include <iostream>
 #include <cstring>
 #include <vector>
