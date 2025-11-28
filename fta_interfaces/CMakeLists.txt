@@ -19,6 +19,9 @@ find_package(rosidl_default_generators REQUIRED)
 set(msg_files
   "msg/ActionEvent.msg"
   "msg/ActuatorStatus.msg"
+  "msg/PatliteCommand.msg"
+  "msg/PatliteAction.msg"
+  "msg/SignalCommand.msg"
 )
 
 # Generate messages

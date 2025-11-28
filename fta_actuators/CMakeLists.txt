@@ -27,48 +27,82 @@ include_directories(
 )
 
 # ============================================
-# ���̺귯��: Patlite USB ����̹�
+# ���̺귯��: Patlite LED Buzzer USB ����̹�
 # ============================================
-add_library(patlite_usb_driver SHARED
-  src/patlite/patlite_usb_driver.cpp
+add_library(patlite_led_buzzer_usb_driver SHARED
+  src/patlite_led_buzzer/patlite_led_buzzer_led_buzzer_usb_driver.cpp
 )
 
-target_link_libraries(patlite_usb_driver
+target_link_libraries(patlite_led_buzzer_usb_driver
   ${LIBUSB_LIBRARIES}
 )
 
-target_include_directories(patlite_usb_driver PUBLIC
+target_include_directories(patlite_led_buzzer_usb_driver PUBLIC
   ${LIBUSB_INCLUDE_DIRS}
 )
 
 # ============================================
+# 라이브러리: Patlite Controller (C# 포트)
+# ============================================
+add_library(patlite_led_buzzer_controller SHARED
+  src/patlite_led_buzzer/patlite_led_buzzer_led_buzzer_controller.cpp
+)
+
+ament_target_dependencies(patlite_led_buzzer_controller
+  rclcpp
+)
+
+# ============================================
+# 라이브러리: Patlite Hardware Factory
+# ============================================
+add_library(patlite_led_buzzer_hardware_factory SHARED
+  src/patlite_led_buzzer/patlite_led_buzzer_led_buzzer_hardware_factory.cpp
+  src/patlite_led_buzzer/patlite_led_buzzer_led_buzzer_nedll_driver.cpp
+  src/patlite_led_buzzer/patlite_led_buzzer_led_buzzer_usb_direct_driver.cpp
+)
+
+ament_target_dependencies(patlite_led_buzzer_hardware_factory
+  rclcpp
+)
+
+# libusb 및 dl 라이브러리 링크
+target_link_libraries(patlite_led_buzzer_hardware_factory
+  ${LIBUSB_LIBRARIES}
+)
+
+if(UNIX AND NOT APPLE)
+  target_link_libraries(patlite_led_buzzer_hardware_factory dl)
+endif()
+
+# ============================================
 # ���̺귯��: Patlite �ó����
 # ============================================
-add_library(patlite_scenarios SHARED
-  src/patlite/patlite_scenarios.cpp
+add_library(patlite_led_buzzer_scenarios SHARED
+  src/patlite_led_buzzer/patlite_led_buzzer_led_buzzer_scenarios.cpp
 )
 
-target_link_libraries(patlite_scenarios
-  patlite_usb_driver
+target_link_libraries(patlite_led_buzzer_scenarios
+  patlite_led_buzzer_usb_driver
+  patlite_led_buzzer_controller
 )
 
-ament_target_dependencies(patlite_scenarios
+ament_target_dependencies(patlite_led_buzzer_scenarios
   rclcpp
 )
 
 # ============================================
 # ���̺귯��: Patlite ����̹� (���� ȣȯ��)
 # ============================================
-add_library(patlite_driver SHARED
-  src/patlite/patlite_driver.cpp
+add_library(patlite_led_buzzer_driver SHARED
+  src/patlite_led_buzzer/patlite_led_buzzer_led_buzzer_driver.cpp
 )
 
-target_link_libraries(patlite_driver
-  patlite_usb_driver
-  patlite_scenarios
+target_link_libraries(patlite_led_buzzer_driver
+  patlite_led_buzzer_usb_driver
+  patlite_led_buzzer_scenarios
 )
 
-ament_target_dependencies(patlite_driver
+ament_target_dependencies(patlite_led_buzzer_driver
   rclcpp
 )
 
@@ -77,54 +111,73 @@ if(WIN32)
   # Windows: �߰� ���̺귯�� ���� (LoadLibrary ���)
 else()
   # Linux: dl ���̺귯�� �ʿ� (dlopen ���)
-  target_link_libraries(patlite_driver dl)
+  target_link_libraries(patlite_led_buzzer_driver dl)
 endif()
 
 # ============================================
-# ������Ʈ: LED Buzzer ���
+# 컴포넌트: Patlite 노드
 # ============================================
-add_library(led_buzzer_node_component SHARED
-  src/led_buzzer_node.cpp
+add_library(patlite_led_buzzer_node_component SHARED
+  src/patlite_led_buzzer/patlite_led_buzzer_led_buzzer_node.cpp
 )
 
-target_link_libraries(led_buzzer_node_component
-  patlite_driver
+target_link_libraries(patlite_led_buzzer_node_component
+  patlite_led_buzzer_driver
 )
 
-ament_target_dependencies(led_buzzer_node_component
+ament_target_dependencies(patlite_led_buzzer_node_component
   rclcpp
   rclcpp_components
   fta_interfaces
   nlohmann_json
 )
 
-rclcpp_components_register_nodes(led_buzzer_node_component "fta_actuators::LEDBuzzerNode")
+rclcpp_components_register_nodes(patlite_led_buzzer_node_component "fta_actuators::PatliteLedBuzzerNode")
 
 # ============================================
-# ���� ����: LED Buzzer ���
+# 독립 실행: Patlite 노드
 # ============================================
-add_executable(led_buzzer_node
-  src/led_buzzer_node_main.cpp
+add_executable(patlite_led_buzzer_node
+  src/patlite_led_buzzer/patlite_led_buzzer_led_buzzer_node_main.cpp
 )
 
-target_link_libraries(led_buzzer_node
-  led_buzzer_node_component
-  patlite_driver
+target_link_libraries(patlite_led_buzzer_node
+  patlite_led_buzzer_node_component
+  patlite_led_buzzer_driver
 )
 
-ament_target_dependencies(led_buzzer_node
+ament_target_dependencies(patlite_led_buzzer_node
+  rclcpp
+  fta_interfaces
+)
+
+
+
+# ============================================
+# 실행 파일: 신호 제어 노드 (ROS2 구독)
+# ============================================
+add_executable(signal_controller_node
+  src/signal_controller_node.cpp
+)
+
+target_link_libraries(signal_controller_node
+  patlite_led_buzzer_hardware_factory
+  ${LIBUSB_LIBRARIES}
+)
+
+ament_target_dependencies(signal_controller_node
   rclcpp
   fta_interfaces
 )
 
 # ============================================
-# ���� ����: �׽�Ʈ �׼� ������
+# 테스트: ROS2 신호 발행자 (통합 테스트용)
 # ============================================
-add_executable(test_action_publisher
-  src/test_action_publisher.cpp
+add_executable(test_ros2_signal_publisher
+  src/tests/test_ros2_signal_publisher.cpp
 )
 
-ament_target_dependencies(test_action_publisher
+ament_target_dependencies(test_ros2_signal_publisher
   rclcpp
   fta_interfaces
 )
@@ -133,21 +186,24 @@ ament_target_dependencies(test_action_publisher
 # ��ġ
 # ============================================
 
-# ���̺귯�� ��ġ
+# 라이브러리 설치
 install(TARGETS
-  patlite_usb_driver
-  patlite_scenarios
-  patlite_driver
-  led_buzzer_node_component
+  patlite_led_buzzer_usb_driver
+  patlite_led_buzzer_controller
+  patlite_led_buzzer_hardware_factory
+  patlite_led_buzzer_scenarios
+  patlite_led_buzzer_driver
+  patlite_led_buzzer_node_component
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
 
-# ���� ���� ��ġ
+# 실행 파일 및 테스트 설치
 install(TARGETS
-  led_buzzer_node
-  test_action_publisher
+  patlite_led_buzzer_node
+  signal_controller_node
+  test_ros2_signal_publisher
   DESTINATION lib/${PROJECT_NAME}
 )
 

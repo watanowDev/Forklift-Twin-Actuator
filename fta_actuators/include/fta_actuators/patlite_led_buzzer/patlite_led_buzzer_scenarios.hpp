@@ -1,0 +1,147 @@
+#ifndef FTA_ACTUATORS__PATLITE_LED_BUZZER_SCENARIOS_HPP_
+#define FTA_ACTUATORS__PATLITE_LED_BUZZER_SCENARIOS_HPP_
+
+#include <string>
+#include <vector>
+#include <map>
+
+// Include enum definitions from driver
+#include "fta_actuators/patlite_led_buzzer/patlite_led_buzzer_driver.hpp"
+
+namespace fta_actuators
+{
+
+    // ============================================
+    // 상황별 제어 시나리오 열거형
+    // C#의 ePlayBuzzerLed와 동일
+    // ============================================
+    enum class PatliteLedBuzzerScenario
+    {
+        // 컨테이너 관련
+        CONTAINER_OK, // 컨테이너 OK
+
+        // 사이즈 측정 관련
+        SIZE_CHECK_START,      // 사이즈 체크 시작
+        SIZE_MEASURE_OK,       // 사이즈 측정 완료 (QR 있음)
+        NO_QR_SIZE_MEASURE_OK, // 사이즈 측정 완료 (QR 없음)
+
+        // QR 관련
+        QR_PICKUP,            // QR 픽업
+        QR_MEASURE_OK,        // QR 측정 완료
+        NO_QR_PICKUP,         // QR 없이 픽업
+        NO_QR_MEASURE_OK,     // QR 없이 측정 완료
+        NO_QR_CHECK_COMPLETE, // QR 없이 체크 완료
+
+        // 앱 물류 선택 (SET_ITEM) 관련
+        SET_ITEM,                  // 앱에서 물류 선택
+        SET_ITEM_NORMAL,           // 앱 물류 선택 (일반)
+        SET_ITEM_PICKUP,           // 앱 물류 픽업
+        SET_ITEM_SIZE_CHECK_START, // 앱 물류 사이즈 체크 시작
+        SET_ITEM_MEASURE_OK,       // 앱 물류 측정 완료
+        SET_ITEM_CHECK_COMPLETE,   // 앱 물류 체크 완료
+
+        // 기타 작업
+        CLEAR_ITEM,     // 아이템 클리어
+        DROP,           // 드롭
+        CHECK_COMPLETE, // 체크 완료
+
+        // 에러 관련
+        DEVICE_ERROR,       // 디바이스 에러
+        DEVICE_ERROR_CLEAR, // 디바이스 에러 해제
+        INVALID_PLACE       // 잘못된 위치 (보행자 감지)
+    };
+
+    // ============================================
+    // 시나리오별 LED/Buzzer 설정 구조체
+    // ============================================
+    struct PatliteLedBuzzerCommand
+    {
+        LEDColor led_color;
+        LEDPattern led_pattern;
+        BuzzerPattern buzzer_pattern;
+        int buzzer_count;
+
+        PatliteLedBuzzerCommand()
+            : led_color(LEDColor::GREEN), led_pattern(LEDPattern::CONTINUOUS), buzzer_pattern(BuzzerPattern::OFF), buzzer_count(1) {}
+
+        PatliteLedBuzzerCommand(LEDColor c, LEDPattern lp, BuzzerPattern bp, int count = 1)
+            : led_color(c), led_pattern(lp), buzzer_pattern(bp), buzzer_count(count) {}
+    };
+
+    // ============================================
+    // 시나리오 매핑 클래스
+    // ============================================
+    class PatliteLedBuzzerScenarioMapper
+    {
+    public:
+        PatliteLedBuzzerScenarioMapper();
+
+        // 시나리오에 해당하는 명령 가져오기
+        PatliteLedBuzzerCommand get_command(PatliteLedBuzzerScenario scenario) const;
+
+        // 시나리오 이름으로 명령 가져오기 (ROS2 토픽용)
+        PatliteLedBuzzerCommand get_command_by_name(const std::string &scenario_name) const;
+
+        // 시나리오 이름 목록 가져오기
+        std::vector<std::string> get_scenario_names() const;
+
+    private:
+        std::map<PatliteLedBuzzerScenario, PatliteLedBuzzerCommand> scenario_map_;
+        std::map<std::string, PatliteLedBuzzerScenario> name_to_scenario_;
+
+        void initialize_scenarios();
+    };
+
+    // ============================================
+    // 상황별 제어 함수들 (C#의 함수들과 대응)
+    // ============================================
+    class PatliteLedBuzzerController
+    {
+    public:
+        PatliteLedBuzzerController();
+
+        // 기본 시나리오 실행
+        void execute_scenario(PatliteLedBuzzerScenario scenario);
+
+        // 측정 시작 시 부저/LED (StartMeasuringBuzzer)
+        void start_measuring_buzzer(bool set_item, const std::string &qr_code, bool is_error, bool func_off);
+
+        // 측정 완료 시 부저/LED (FinishMeasuringBuzzer)
+        void finish_measuring_buzzer(bool set_item, const std::string &qr_code, bool is_error, bool func_off);
+
+        // 사이즈 측정 완료 (FinishMeasuringSize)
+        void finish_measuring_size(const std::string &qr_code, bool func_off);
+
+        // 보행자 감지 경고 (AlertDetectPerson)
+        void alert_detect_person(bool func_off);
+
+        // 예외 체크 부저 (CheckExceptionBuzzer)
+        void check_exception_buzzer(bool set_item, const std::string &qr_code, bool func_off);
+
+    private:
+        PatliteLedBuzzerScenarioMapper mapper_;
+
+        // 실제 하드웨어 제어 (나중에 구현)
+        void execute_command(const PatliteLedBuzzerCommand &command);
+    };
+
+    // ============================================
+    // 헬퍼 함수: enum을 문자열로 변환
+    // ============================================
+    std::string led_color_to_string(LEDColor color);
+    std::string led_pattern_to_string(LEDPattern pattern);
+    std::string buzzer_pattern_to_string(BuzzerPattern pattern);
+    std::string scenario_to_string(PatliteLedBuzzerScenario scenario);
+
+    // ============================================
+    // 헬퍼 함수: 문자열을 enum으로 변환
+    // ============================================
+    LEDColor string_to_led_color(const std::string &str);
+    LEDPattern string_to_led_pattern(const std::string &str);
+    BuzzerPattern string_to_buzzer_pattern(const std::string &str);
+    PatliteLedBuzzerScenario string_to_scenario(const std::string &str);
+
+} // namespace fta_actuators
+
+#endif  // FTA_ACTUATORS__PATLITE_LED_BUZZER_SCENARIOS_HPP_
+
